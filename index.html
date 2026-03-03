@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاشر</title>
+  <title>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاش</title>
+
+  <!-- ✅ حل خطأ favicon.ico 404 -->
+  <link rel="icon" href="data:,">
 
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,7 +40,7 @@
 
     header {
       background: linear-gradient(135deg, #ffffff 0%, #f0f7fa 100%);
-      padding: 14px 18px;
+      padding: 14px 22px;
       color: var(--text-dark);
       display: flex;
       justify-content: space-between;
@@ -48,7 +51,6 @@
       top: 0;
       z-index: 100;
       gap: 12px;
-      flex-wrap: wrap;
     }
 
     header h1 {
@@ -64,14 +66,6 @@
       color: var(--text-muted);
       margin-top: 4px;
       font-weight: 500;
-    }
-
-    .header-controls{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: flex-start;
     }
 
     .btn {
@@ -114,39 +108,49 @@
     }
     .btn.pdf-btn:hover { background: #e55555; }
 
+    /* ✅ الهيدر: تجميع عناصر التحكم */
+    .header-controls{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .header-select-wrap{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 260px;
+    }
+
+    .header-select-label{
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+
     select, input[type="file"] {
       background: var(--bg-color);
       color: var(--text-dark);
       border-radius: 8px;
       border: 1px solid #D1D8DD;
-      padding: 9px 12px;
+      padding: 9px 10px;
       font-size: 13px;
       font-family: 'Tajawal', sans-serif;
       font-weight: 600;
       cursor: pointer;
       outline: none;
+      width: 100%;
       box-sizing: border-box;
     }
     select:focus { border-color: var(--primary); }
 
-    .header-select{
-      min-width: 260px;
-      max-width: 360px;
-    }
+    .hidden { display: none !important; }
 
-    .status-pill {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      background: #f3f6f9;
-      border: 1px solid #e7edf3;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    main { padding: 18px 20px; }
+    .layout { display: block; min-height: calc(100vh - 80px); }
+    main { padding: 20px 22px; overflow-y: auto; }
 
     .kpi-row {
       display: grid;
@@ -163,39 +167,40 @@
       transition: transform 0.3s ease;
       border: 1px solid rgba(0,0,0,0.02);
     }
+
     .kpi:hover { transform: translateY(-3px); }
 
     .kpi-title { font-size: 13px; color: var(--text-muted); font-weight: 700; }
     .kpi-value { font-size: 26px; font-weight: 800; margin-top: 8px; color: var(--primary); }
     .kpi-sub { font-size: 12px; color: #95a5a6; margin-top: 4px; font-weight: 500; }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
     .grid-3x3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
     .panel {
       background: var(--card-bg);
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.04);
       border: 1px solid rgba(0,0,0,0.02);
     }
 
     .panel h4 {
       margin: 0 0 12px 0;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-dark);
-      font-weight: 700;
+      font-weight: 800;
       border-bottom: 2px solid #F0F0F0;
       padding-bottom: 8px;
       display: inline-block;
     }
 
-    canvas { width: 100% !important; height: 200px !important; }
-    .small-chart canvas { height: 150px !important; }
+    canvas { width: 100% !important; height: 220px !important; }
+    .small-chart canvas { height: 200px !important; }
 
     .section-title {
-      font-size: 20px;
-      margin: 10px 0 20px;
+      font-size: 19px;
+      margin: 10px 0 18px;
       color: var(--text-dark);
       font-weight: 800;
       display: flex;
@@ -206,14 +211,11 @@
       content: "";
       display: inline-block;
       width: 6px;
-      height: 20px;
+      height: 18px;
       background: var(--primary);
       margin-left: 10px;
       border-radius: 4px;
     }
-
-    .hidden { display: none !important; }
-    .pdf-export-container { background: white; padding: 20px; border-radius: 12px; }
 
     .note-box {
       background: #fff;
@@ -225,8 +227,23 @@
       font-size: 13px;
       line-height: 1.7;
       box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-      margin-bottom: 14px;
     }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #f3f6f9;
+      border: 1px solid #e7edf3;
+      color: var(--text-muted);
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .pdf-export-container { background: white; padding: 18px; border-radius: 14px; }
 
     #allSchoolsPrint {
       visibility: hidden;
@@ -259,53 +276,6 @@
       font-weight: 500;
     }
 
-    /* ✅ استجابة للجوال */
-    @media (max-width: 900px) {
-      header { padding: 10px 12px; }
-      header h1 { font-size: 18px; }
-      .header-subtitle { font-size: 12px; }
-
-      .header-controls{
-        width: 100%;
-      }
-
-      .header-select{
-        width: 100%;
-        min-width: 0;
-        max-width: none;
-      }
-
-      .btn{
-        padding: 9px 10px;
-        font-size: 12px;
-      }
-
-      main{ padding: 12px 12px 20px; }
-
-      .kpi-row{
-        grid-template-columns: repeat(2, minmax(0,1fr));
-        gap: 10px;
-        margin-bottom: 14px;
-      }
-      .kpi{ padding: 12px; }
-      .kpi-value{ font-size: 20px; }
-
-      .grid-3{ grid-template-columns: 1fr; gap: 12px; }
-      .grid-3x3{ grid-template-columns: 1fr; gap: 12px; }
-
-      .panel{ padding: 12px; }
-      .panel h4{ font-size: 12.5px; }
-
-      canvas{ height: 260px !important; }
-      .small-chart canvas{ height: 240px !important; }
-    }
-
-    @media (max-width: 520px){
-      .kpi-row{ grid-template-columns: 1fr; }
-      .btn{ width: 100%; }
-      .status-pill{ width: 100%; text-align:center; }
-    }
-
     @media print {
       header { display: none !important; }
       body { background: white; color: black; }
@@ -324,162 +294,227 @@
         left: 0; top: 0;
       }
     }
+
+    /* =========================
+       ✅ الجوال: هيدر أصغر + الأزرار صفّين + القائمة المنسدلة بالأعلى
+       ========================= */
+    @media (max-width: 900px) {
+      header{
+        padding: 10px 12px;        /* ✅ تصغير الهيدر */
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      header h1{
+        font-size: 18px;           /* ✅ تصغير العنوان */
+      }
+      .header-subtitle{
+        font-size: 12px;
+        margin-top: 3px;
+      }
+
+      /* ✅ ترتيب الهيدر: اجعل القائمة المنسدلة تحت العنوان */
+      header .left-block{ width: 100%; }
+      header .right-block{ width: 100%; }
+
+      .header-controls{
+        width: 100%;
+        display: grid;             /* ✅ أزرار صفين */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .header-select-wrap{
+        width: 100%;
+        min-width: 0;
+        grid-column: 1 / -1;       /* ✅ dropdown يأخذ عرض كامل */
+      }
+      .header-select-label{ display: none; } /* اختصار بالجوال */
+
+      .status-pill{
+        grid-column: 1 / -1;       /* ✅ حالة البيانات سطر لحالها */
+        justify-content: center;
+      }
+
+      .btn{ width: 100%; padding: 10px 10px; font-size: 13px; }
+
+      main{ padding: 12px 12px 18px; }
+
+      .kpi-row{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .kpi{ padding: 12px; }
+      .kpi-value{ font-size: 20px; }
+
+      .grid-3{ grid-template-columns: 1fr; gap: 12px; }
+      .grid-3x3{ grid-template-columns: 1fr; gap: 12px; }
+
+      canvas{ height: 260px !important; }
+      .small-chart canvas{ height: 240px !important; }
+    }
+
+    @media (max-width: 520px){
+      .kpi-row{ grid-template-columns: 1fr; }
+      .header-controls{ grid-template-columns: 1fr; } /* ✅ صف واحد لو شاشة صغيرة جدًا */
+      .btn{ font-size: 13px; }
+    }
   </style>
 </head>
 
 <body>
 <header>
-  <div>
-    <h1>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاشر</h1>
+  <div class="left-block">
+    <h1>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاش</h1>
     <div class="header-subtitle">عرض مباشر للبيانات + تقارير PDF وطباعة</div>
   </div>
 
-  <div class="header-controls">
-    <!-- ✅ القائمة المنسدلة في الأعلى (للجوال) وبجوار الأزرار (للكمبيوتر) -->
-    <select id="viewSelect" class="header-select" onchange="onViewChange()" disabled></select>
+  <div class="right-block">
+    <div class="header-controls">
 
-    <span class="status-pill" id="dataStatus">بانتظار تحميل البيانات...</span>
+      <!-- ✅ القائمة المنسدلة في الهيدر -->
+      <div class="header-select-wrap">
+        <div class="header-select-label">اختيار:</div>
+        <select id="schoolSelect" onchange="updateDetail()" disabled></select>
+      </div>
 
-    <button class="btn" onclick="refreshData()">تحديث البيانات</button>
-    <button class="btn pdf-btn" onclick="exportCurrentViewToPDF()">تصدير الشاشة كـ PDF</button>
-    <button class="btn primary-action" onclick="printGeneral()">طباعة (عامة)</button>
-    <button class="btn secondary" onclick="printAllSchoolsDetail()">طباعة (كل المدارس)</button>
+      <div class="status-pill" id="dataStatus">بانتظار تحميل البيانات...</div>
+
+      <button class="btn" onclick="refreshData()">تحديث البيانات</button>
+      <button class="btn pdf-btn" onclick="exportCurrentViewToPDF()">تصدير الصفحة الحالية</button>
+      <button class="btn primary-action" onclick="printGeneral()">تصدير الإحصائيات العامة</button>
+      <button class="btn secondary" onclick="printAllSchoolsDetail()">تصدير إحصائيات المدارس</button>
+    </div>
   </div>
 </header>
 
-<main id="mainContent">
+<div class="layout">
+  <main id="mainContent">
 
-  <div class="note-box">
-    <b>ملاحظة:</b> يتم جلب البيانات تلقائيًا من المصدر عند فتح الصفحة أو عند الضغط على "تحديث البيانات".
-  </div>
+    <section id="noDataSection">
+      <div class="section-title">بانتظار البيانات...</div>
+      <p class="note-box">
+        يتم تحميل البيانات تلقائيًا من المصدر.<br>
+        إذا لم تظهر البيانات، اضغط "تحديث البيانات".
+      </p>
+    </section>
 
-  <!-- ✅ أدوات الإدارة في أعلى الصفحة (تظهر فقط عند ?admin=1) -->
-  <div id="adminTools" class="hidden">
-    <div class="note-box">
-      <b>وضع الإدارة:</b><br>
-      1) ارفع Excel هنا<br>
-      2) ثم اضغط "تصدير data.json"<br>
-      3) ارفع data.json إلى المستودع لتحديث اللوحة للجميع
-    </div>
+    <section id="generalSection" class="hidden pdf-export-container">
+      <div class="section-title">نظرة عامة على معدلات الغياب</div>
 
-    <div class="panel" style="margin-bottom:14px;">
-      <h4 style="margin-bottom:10px;">تحديث البيانات (Admin)</h4>
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-title">متوسط الغياب العام</div>
+          <div class="kpi-value" id="kpiOverallAvg">-</div>
+          <div class="kpi-sub">متوسط الغياب لجميع المدارس</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">أعلى مدرسة غيابًا</div>
+          <div class="kpi-value" id="kpiTopSchool" style="color:#e74c3c;">-</div>
+          <div class="kpi-sub" id="kpiTopSchoolValue"></div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">أقل مدرسة غيابًا</div>
+          <div class="kpi-value" id="kpiLowSchool" style="color:#2ecc71;">-</div>
+          <div class="kpi-sub" id="kpiLowSchoolValue"></div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">إجمالي المدارس</div>
+          <div class="kpi-value" id="kpiSchoolCount">-</div>
+          <div class="kpi-sub">حسب مصدر البيانات الحالي</div>
+        </div>
+      </div>
+
+      <div class="section-title">التحليل البياني العام</div>
+
+      <div class="grid-3">
+        <div class="panel"><h4>متوسط الغياب لكل يوم</h4><canvas id="chartAvgByDay"></canvas></div>
+        <div class="panel"><h4>متوسط الغياب لكل مدرسة</h4><canvas id="chartAvgBySchool"></canvas></div>
+        <div class="panel"><h4>أعلى 5 مدارس غيابًا</h4><canvas id="chartTop5"></canvas></div>
+        <div class="panel"><h4>أقل 5 مدارس غيابًا</h4><canvas id="chartBottom5"></canvas></div>
+        <div class="panel"><h4>توزيع متوسطات الغياب</h4><canvas id="chartDistribution"></canvas></div>
+        <div class="panel"><h4>اليوم الأعلى والأقل غيابًا</h4><canvas id="chartBestWorstDay"></canvas></div>
+        <div class="panel"><h4>مقارنة 5 مدارس (تتبع)</h4><canvas id="chartMatrix"></canvas></div>
+        <div class="panel"><h4>انحراف المدارس عن المتوسط العام</h4><canvas id="chartDeviation"></canvas></div>
+        <div class="panel"><h4>مسار واتجاه الغياب العام</h4><canvas id="chartTrend"></canvas></div>
+        <div class="panel"><h4>توزيع المدارس (فوق/تحت المتوسط)</h4><canvas id="chartAboveBelow"></canvas></div>
+        <div class="panel"><h4>أول 10 مدارس</h4><canvas id="chartFirst10"></canvas></div>
+        <div class="panel"><h4>آخر 10 مدارس</h4><canvas id="chartLast10"></canvas></div>
+        <div class="panel"><h4>مدى تباين الغياب</h4><canvas id="chartRange"></canvas></div>
+        <div class="panel"><h4>مقارنة (اليوم الأول vs الأخير)</h4><canvas id="chartFirstLastDay"></canvas></div>
+        <div class="panel"><h4>مقارنة خاصة (اليوم 3 vs 4)</h4><canvas id="chartDay3vs4"></canvas></div>
+      </div>
+    </section>
+
+    <section id="detailSection" class="hidden pdf-export-container">
+      <div class="section-title">التحليل التفصيلي للمدرسة المختارة</div>
+
+      <div class="kpi-row">
+        <div class="kpi">
+          <div class="kpi-title">اسم المدرسة</div>
+          <div class="kpi-value" id="detailSchoolName" style="font-size:20px;">-</div>
+          <div class="kpi-sub" id="detailSchoolCode"></div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">متوسط غياب المدرسة</div>
+          <div class="kpi-value" id="detailSchoolAvg">-</div>
+          <div class="kpi-sub">مقارنة بجميع الأيام المرصودة</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">متوسط الغياب العام</div>
+          <div class="kpi-value" id="detailOverallAvg">-</div>
+          <div class="kpi-sub">Benchmark</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-title">الترتيب ضمن النطاق</div>
+          <div class="kpi-value" id="detailRank">-</div>
+          <div class="kpi-sub">حسب معدل الغياب التراكمي</div>
+        </div>
+      </div>
+
+      <div class="grid-3x3">
+        <div class="panel small-chart"><h4>اتجاه الغياب</h4><canvas id="dChartTrend"></canvas></div>
+        <div class="panel small-chart"><h4>مقارنة بالمتوسط العام لكل يوم</h4><canvas id="dChartVsAvgByDay"></canvas></div>
+        <div class="panel small-chart"><h4>أعلى وأقل يوم غياب</h4><canvas id="dChartBestWorstDay"></canvas></div>
+        <div class="panel small-chart"><h4>انحراف عن متوسط كل يوم</h4><canvas id="dChartDeviation"></canvas></div>
+        <div class="panel small-chart"><h4>مقارنة مع الأعلى غيابًا</h4><canvas id="dChartVsTop"></canvas></div>
+        <div class="panel small-chart"><h4>مقارنة مع الأقل غيابًا</h4><canvas id="dChartVsLow"></canvas></div>
+        <div class="panel small-chart"><h4>أول يوم vs آخر يوم</h4><canvas id="dChartFirstLast"></canvas></div>
+        <div class="panel small-chart"><h4>موقع المدرسة ضمن التوزيع</h4><canvas id="dChartPosition"></canvas></div>
+        <div class="panel small-chart"><h4>المدرسة مقابل الجميع</h4><canvas id="dChartSchoolVsOverall"></canvas></div>
+      </div>
+    </section>
+
+    <div id="allSchoolsPrint"></div>
+
+    <!-- ✅ أدوات الإدارة تظهر فقط عند ?admin=1 -->
+    <section id="adminTools" class="hidden" style="margin-top:16px;">
+      <div class="section-title">وضع الإدارة</div>
+      <div class="note-box" style="margin-bottom:10px;">
+        1) ارفع Excel هنا<br>
+        2) ثم اضغط "تصدير data.json"<br>
+        3) ارفع data.json إلى المستودع لتحديث اللوحة للجميع
+      </div>
       <input type="file" id="fileInput" accept=".xlsx,.xls" />
-      <button class="btn primary-action" style="margin-top:10px;" onclick="exportDataAsJson()">تصدير data.json</button>
-    </div>
-  </div>
+      <button class="btn primary-action" style="width:100%; margin-top:10px;" onclick="exportDataAsJson()">
+        تصدير data.json
+      </button>
+    </section>
 
-  <section id="noDataSection">
-    <div class="section-title">بانتظار البيانات...</div>
-    <p class="note-box">
-      يتم تحميل البيانات تلقائيًا من المصدر.<br>
-      إذا لم تظهر البيانات، اضغط "تحديث البيانات".
-    </p>
-  </section>
-
-  <section id="generalSection" class="hidden pdf-export-container">
-    <div class="section-title">نظرة عامة على معدلات الغياب</div>
-
-    <div class="kpi-row">
-      <div class="kpi">
-        <div class="kpi-title">متوسط الغياب العام</div>
-        <div class="kpi-value" id="kpiOverallAvg">-</div>
-        <div class="kpi-sub">متوسط الغياب لجميع المدارس</div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">أعلى مدرسة غيابًا</div>
-        <div class="kpi-value" id="kpiTopSchool" style="color:#e74c3c;">-</div>
-        <div class="kpi-sub" id="kpiTopSchoolValue"></div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">أقل مدرسة غيابًا</div>
-        <div class="kpi-value" id="kpiLowSchool" style="color:#2ecc71;">-</div>
-        <div class="kpi-sub" id="kpiLowSchoolValue"></div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">إجمالي المدارس</div>
-        <div class="kpi-value" id="kpiSchoolCount">-</div>
-        <div class="kpi-sub">حسب مصدر البيانات الحالي</div>
-      </div>
-    </div>
-
-    <div class="section-title">التحليل البياني العام</div>
-
-    <div class="grid-3">
-      <div class="panel"><h4>متوسط الغياب لكل يوم</h4><canvas id="chartAvgByDay"></canvas></div>
-      <div class="panel"><h4>متوسط الغياب لكل مدرسة</h4><canvas id="chartAvgBySchool"></canvas></div>
-      <div class="panel"><h4>أعلى 5 مدارس غيابًا</h4><canvas id="chartTop5"></canvas></div>
-      <div class="panel"><h4>أقل 5 مدارس غيابًا</h4><canvas id="chartBottom5"></canvas></div>
-      <div class="panel"><h4>توزيع متوسطات الغياب</h4><canvas id="chartDistribution"></canvas></div>
-      <div class="panel"><h4>اليوم الأعلى والأقل غيابًا</h4><canvas id="chartBestWorstDay"></canvas></div>
-      <div class="panel"><h4>مقارنة 5 مدارس (تتبع)</h4><canvas id="chartMatrix"></canvas></div>
-      <div class="panel"><h4>انحراف المدارس عن المتوسط العام</h4><canvas id="chartDeviation"></canvas></div>
-      <div class="panel"><h4>مسار واتجاه الغياب العام</h4><canvas id="chartTrend"></canvas></div>
-      <div class="panel"><h4>توزيع المدارس (فوق/تحت المتوسط)</h4><canvas id="chartAboveBelow"></canvas></div>
-      <div class="panel"><h4>أول 10 مدارس</h4><canvas id="chartFirst10"></canvas></div>
-      <div class="panel"><h4>آخر 10 مدارس</h4><canvas id="chartLast10"></canvas></div>
-      <div class="panel"><h4>مدى تباين الغياب</h4><canvas id="chartRange"></canvas></div>
-      <div class="panel"><h4>مقارنة (اليوم الأول vs الأخير)</h4><canvas id="chartFirstLastDay"></canvas></div>
-      <div class="panel"><h4>مقارنة خاصة (اليوم 3 vs 4)</h4><canvas id="chartDay3vs4"></canvas></div>
-    </div>
-  </section>
-
-  <section id="detailSection" class="hidden pdf-export-container">
-    <div class="section-title">التحليل التفصيلي للمدرسة المختارة</div>
-
-    <div class="kpi-row">
-      <div class="kpi">
-        <div class="kpi-title">اسم المدرسة</div>
-        <div class="kpi-value" id="detailSchoolName" style="font-size:20px;">-</div>
-        <div class="kpi-sub" id="detailSchoolCode"></div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">متوسط غياب المدرسة</div>
-        <div class="kpi-value" id="detailSchoolAvg">-</div>
-        <div class="kpi-sub">مقارنة بجميع الأيام المرصودة</div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">متوسط الغياب العام</div>
-        <div class="kpi-value" id="detailOverallAvg">-</div>
-        <div class="kpi-sub">Benchmark</div>
-      </div>
-
-      <div class="kpi">
-        <div class="kpi-title">الترتيب ضمن النطاق</div>
-        <div class="kpi-value" id="detailRank">-</div>
-        <div class="kpi-sub">حسب معدل الغياب التراكمي</div>
-      </div>
-    </div>
-
-    <div class="grid-3x3">
-      <div class="panel small-chart"><h4>اتجاه الغياب</h4><canvas id="dChartTrend"></canvas></div>
-      <div class="panel small-chart"><h4>مقارنة بالمتوسط العام لكل يوم</h4><canvas id="dChartVsAvgByDay"></canvas></div>
-      <div class="panel small-chart"><h4>أعلى وأقل يوم غياب</h4><canvas id="dChartBestWorstDay"></canvas></div>
-      <div class="panel small-chart"><h4>انحراف عن متوسط كل يوم</h4><canvas id="dChartDeviation"></canvas></div>
-      <div class="panel small-chart"><h4>مقارنة مع الأعلى غيابًا</h4><canvas id="dChartVsTop"></canvas></div>
-      <div class="panel small-chart"><h4>مقارنة مع الأقل غيابًا</h4><canvas id="dChartVsLow"></canvas></div>
-      <div class="panel small-chart"><h4>أول يوم vs آخر يوم</h4><canvas id="dChartFirstLast"></canvas></div>
-      <div class="panel small-chart"><h4>موقع المدرسة ضمن التوزيع</h4><canvas id="dChartPosition"></canvas></div>
-      <div class="panel small-chart"><h4>المدرسة مقابل الجميع</h4><canvas id="dChartSchoolVsOverall"></canvas></div>
-    </div>
-  </section>
-
-  <div id="allSchoolsPrint"></div>
-</main>
+  </main>
+</div>
 
 <script>
 /* ===========================
    1) إعدادات مصدر البيانات
 =========================== */
-// ✅ رابط data.json مباشرة
 const DATA_URL = "https://eah1406-ali.github.io/absence-dashboard/data.json";
-
-// هل نحن في وضع إدارة؟
 const IS_ADMIN = new URLSearchParams(location.search).get("admin") === "1";
 
 /* ===========================
@@ -501,7 +536,6 @@ let charts = {};
 let dCharts = {};
 let allPrintBuilt = false;
 
-// ألوان متناسقة
 const pastel = ["#8AB6D6","#B8E0D2","#D7BCE8","#F9E79F","#F1948A","#F6D6AD","#EAEAEA"];
 
 Chart.defaults.font.family = "'Tajawal', sans-serif";
@@ -548,28 +582,26 @@ async function loadDataFromJsonUrl() {
       return;
     }
 
-    // تنظيف الرسوم السابقة
     Object.values(charts).forEach(ch => { try { ch.destroy(); } catch(e){} });
     Object.values(dCharts).forEach(ch => { try { ch.destroy(); } catch(e){} });
     charts = {};
     dCharts = {};
 
     prepareMetrics();
-    initViewSelector();
+    initSelector();
     fillKPIs();
     createGeneralCharts();
     createDetailCharts();
-
-    // افتراضي: النطاق كاملاً
-    document.getElementById("viewSelect").value = "all";
+    // افتراضيًا: النطاق كاملاً
     showGeneral();
 
     document.getElementById("noDataSection").classList.add("hidden");
-    document.getElementById("generalSection").classList.remove("hidden");
-    document.getElementById("viewSelect").disabled = false;
+    document.getElementById("schoolSelect").disabled = false;
+    document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
 
     allPrintBuilt = false;
     setStatus("تم تحميل البيانات بنجاح ✅");
+
   } catch (err) {
     console.error(err);
     setStatus("تعذر تحميل البيانات (تحقق من رابط data.json)");
@@ -606,27 +638,23 @@ if (IS_ADMIN) {
         return;
       }
 
-      // إعادة بناء الرسوم من بيانات Excel (لوضع الإدارة)
       Object.values(charts).forEach(ch => { try { ch.destroy(); } catch(e){} });
       Object.values(dCharts).forEach(ch => { try { ch.destroy(); } catch(e){} });
       charts = {};
       dCharts = {};
 
       prepareMetrics();
-      initViewSelector();
+      initSelector();
       fillKPIs();
       createGeneralCharts();
       createDetailCharts();
-
-      document.getElementById("noDataSection").classList.add("hidden");
-      document.getElementById("generalSection").classList.remove("hidden");
-      document.getElementById("viewSelect").disabled = false;
-
-      // افتراضي: النطاق كاملاً
-      document.getElementById("viewSelect").value = "all";
       showGeneral();
 
+      document.getElementById("noDataSection").classList.add("hidden");
+      document.getElementById("schoolSelect").disabled = false;
+      document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
       allPrintBuilt = false;
+
       alert("تم تحميل Excel في وضع الإدارة. يمكنك الآن تصدير data.json");
     };
     reader.readAsArrayBuffer(file);
@@ -707,7 +735,6 @@ function prepareMetrics() {
 
   const maxDays = Math.max(...schools.map(s => s.values.length));
   avgByDay = [];
-
   for (let d = 0; d < maxDays; d++) {
     const vals = schools.map(s => s.values[d]).filter(v => typeof v === "number");
     avgByDay.push(avg(vals));
@@ -721,8 +748,8 @@ function prepareMetrics() {
   belowCount = schoolAverages.length - aboveCount;
 }
 
-function initViewSelector() {
-  const sel = document.getElementById("viewSelect");
+function initSelector() {
+  const sel = document.getElementById("schoolSelect");
   sel.innerHTML = "";
 
   const optAll = document.createElement("option");
@@ -736,6 +763,8 @@ function initViewSelector() {
     opt.textContent = s.name;
     sel.appendChild(opt);
   });
+
+  sel.value = "all";
 }
 
 function fillKPIs() {
@@ -748,29 +777,29 @@ function fillKPIs() {
   document.getElementById("kpiLowSchoolValue").textContent = lowSchool ? (lowSchool.avg * 100).toFixed(2) + "٪" : "";
 
   document.getElementById("kpiSchoolCount").textContent = schools.length;
-
-  document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
 }
 
+/* ===========================
+   عرض عام / عرض مدرسة
+=========================== */
 function showGeneral(){
   document.getElementById("generalSection").classList.remove("hidden");
   document.getElementById("detailSection").classList.add("hidden");
 }
 
-function showDetail(){
+function showDetail(idx){
   document.getElementById("generalSection").classList.add("hidden");
   document.getElementById("detailSection").classList.remove("hidden");
+  updateDetailCharts(idx);
 }
 
-function onViewChange(){
-  const v = document.getElementById("viewSelect").value;
+function updateDetail(){
+  const v = document.getElementById("schoolSelect").value;
   if(v === "all"){
     showGeneral();
-    return;
+  }else{
+    showDetail(parseInt(v,10));
   }
-  const idx = parseInt(v, 10);
-  showDetail();
-  updateDetailCharts(idx);
 }
 
 /* ===========================
@@ -936,13 +965,14 @@ function updateDetailCharts(idx) {
   document.getElementById("detailSchoolCode").textContent = "الرقم الوزاري: " + s.code;
   document.getElementById("detailSchoolAvg").textContent = (sAvg * 100).toFixed(2) + "٪";
   document.getElementById("detailRank").textContent = rank + " من " + schools.length;
+  document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
 
   const labels = days.slice(0, s.values.length);
 
   dCharts.dChartTrend.config.type = "line";
   dCharts.dChartTrend.data = {
     labels,
-    datasets: [{ label: "غياب المدرسة ٪", data: s.values.map(v => v * 100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", fill: true, tension: 0.4 }]
+    datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", fill: true, tension: 0.4 }]
   };
   dCharts.dChartTrend.update();
 
@@ -1094,14 +1124,12 @@ function buildAllSchoolsPrint() {
       data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", tension: 0.4, fill: true }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.vsAvg.getContext("2d"), {
       type: "bar",
       data: { labels, datasets: [{ data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 }, { data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[6], borderRadius: 4 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     const maxVal = Math.max(...s.values);
     const minVal = Math.min(...s.values);
@@ -1113,49 +1141,42 @@ function buildAllSchoolsPrint() {
       data: { labels: [labels[maxIdx], labels[minIdx]], datasets: [{ data: [maxVal * 100, minVal * 100], backgroundColor: [pastel[4], pastel[1]], borderRadius: 4 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.dev.getContext("2d"), {
       type: "bar",
       data: { labels, datasets: [{ data: s.values.map((v, i) => (v - (avgByDay[i] || 0)) * 100), backgroundColor: s.values.map((v, i) => v >= (avgByDay[i] || 0) ? pastel[4] : pastel[1]), borderRadius: 2 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.vsTop.getContext("2d"), {
       type: "line",
       data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 }, { data: topData.values.map(v => v * 100), borderColor: pastel[4], tension: 0.4, borderDash: [5,5] }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.vsLow.getContext("2d"), {
       type: "line",
       data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 }, { data: lowData.values.map(v => v * 100), borderColor: pastel[1], tension: 0.4, borderDash: [5,5] }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.firstLast.getContext("2d"), {
       type: "bar",
       data: { labels: [labels[0], labels[s.values.length - 1]], datasets: [{ data: [s.values[0] * 100, s.values[s.values.length - 1] * 100], backgroundColor: [pastel[3], pastel[5]], borderRadius: 4 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.position.getContext("2d"), {
       type: "bar",
       data: { labels: schoolAverages.map(x => x.name), datasets: [{ data: schoolAverages.map(x => x.avg * 100), backgroundColor: schoolAverages.map(x => x.code === s.code ? pastel[0] : pastel[6]), borderRadius: 2 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ display:false } } }
     });
-    c.resize(); c.update();
 
     c = new Chart(localCanvases.schoolVsOverall.getContext("2d"), {
       type: "bar",
       data: { labels, datasets: [{ data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 }, { data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[2], borderRadius: 4 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
     });
-    c.resize(); c.update();
   });
 
   allPrintBuilt = true;
@@ -1165,7 +1186,6 @@ function buildAllSchoolsPrint() {
    9) الطباعة والتصدير
 =========================== */
 function printGeneral() {
-  showGeneral();
   document.body.classList.add("print-general");
   document.body.classList.remove("print-detail");
   window.print();
@@ -1176,9 +1196,7 @@ function printAllSchoolsDetail() {
     alert("لا توجد بيانات للطباعة.");
     return;
   }
-
   if (!allPrintBuilt) buildAllSchoolsPrint();
-
   document.body.classList.remove("print-general");
   document.body.classList.add("print-detail");
   window.print();
@@ -1192,8 +1210,7 @@ function exportCurrentViewToPDF() {
 
   const isGeneral = !document.getElementById("generalSection").classList.contains("hidden");
   const elementToPrint = isGeneral ? document.getElementById("generalSection") : document.getElementById("detailSection");
-
-  let filename = isGeneral ? 'التقرير_العام_للغياب.pdf' : 'تقرير_مدرسة_' + document.getElementById("detailSchoolName").innerText + '.pdf';
+  const filename = isGeneral ? 'التقرير_العام_للغياب.pdf' : 'تقرير_مدرسة_' + document.getElementById("detailSchoolName").innerText + '.pdf';
 
   const options = {
     margin: 0.3,
@@ -1211,21 +1228,12 @@ function exportCurrentViewToPDF() {
 =========================== */
 function exportDataAsJson() {
   if (!IS_ADMIN) return;
-
   if (!schools.length || !days.length) {
     alert("ارفع Excel أولاً ثم صدّر data.json");
     return;
   }
 
-  const payload = {
-    days,
-    schools: schools.map(s => ({
-      code: s.code,
-      name: s.name,
-      values: s.values
-    }))
-  };
-
+  const payload = { days, schools: schools.map(s => ({ code: s.code, name: s.name, values: s.values })) };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
 
