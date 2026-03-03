@@ -418,11 +418,6 @@
 
 <div class="layout">
   <nav>
-    <h3>التنقل السريع</h3>
-    <button class="btn" onclick="toggleMode('general'); if(window.innerWidth<=900) toggleSidebar(false);" style="margin-left:0;">اللوحة العامة</button>
-    <button class="btn" onclick="toggleMode('detail'); if(window.innerWidth<=900) toggleSidebar(false);" style="margin-left:0;">لوحة مدرسة مخصصة</button>
-
-    <hr style="border-color:#EAEAEA; margin:20px 0;">
 
     <div style="font-size:14px; color:var(--text-dark); font-weight:800; margin-bottom:10px;">اختيار مدرسة:</div>
     <select id="schoolSelect" onchange="updateDetail()" style="width: 100%;" disabled></select>
@@ -851,22 +846,36 @@ function initSelectors() {
   sel1.innerHTML = "";
   sel2.innerHTML = "";
 
+  // ✅ الخيار الأول: النطاق كاملاً
+  const optAll1 = document.createElement("option");
+  optAll1.value = "all";
+  optAll1.textContent = "النطاق كاملاً";
+  sel1.appendChild(optAll1);
+
+  const optAll2 = document.createElement("option");
+  optAll2.value = "all";
+  optAll2.textContent = "النطاق كاملاً";
+  sel2.appendChild(optAll2);
+
+  // المدارس
   schools.forEach((s, idx) => {
     const opt1 = document.createElement("option");
-    opt1.value = idx;
+    opt1.value = String(idx);
     opt1.textContent = s.name;
     sel1.appendChild(opt1);
 
     const opt2 = document.createElement("option");
-    opt2.value = idx;
+    opt2.value = String(idx);
     opt2.textContent = s.name;
     sel2.appendChild(opt2);
   });
 
-  if (schools.length > 0) {
-    sel1.value = 0;
-    sel2.value = 0;
-  }
+  // افتراضيًا: النطاق كاملاً
+  sel1.value = "all";
+  sel2.value = "all";
+
+  // اعرض اللوحة العامة
+  toggleMode("general");
 }
 
 function fillKPIs() {
@@ -1034,15 +1043,31 @@ function createDetailCharts() {
 }
 
 function updateDetail() {
-  const idx = parseInt(document.getElementById("schoolSelect").value,10);
-  document.getElementById("schoolSelectDetail").value = idx;
-  updateDetailCharts(idx);
+  const v = document.getElementById("schoolSelect").value;
+
+  document.getElementById("schoolSelectDetail").value = v;
+
+  if (v === "all") {
+    toggleMode("general");
+    return;
+  }
+
+  toggleMode("detail");
+  updateDetailCharts(parseInt(v, 10));
 }
 
 function syncSchoolSelects() {
-  const idx = parseInt(document.getElementById("schoolSelectDetail").value,10);
-  document.getElementById("schoolSelect").value = idx;
-  updateDetailCharts(idx);
+  const v = document.getElementById("schoolSelectDetail").value;
+
+  document.getElementById("schoolSelect").value = v;
+
+  if (v === "all") {
+    toggleMode("general");
+    return;
+  }
+
+  toggleMode("detail");
+  updateDetailCharts(parseInt(v, 10));
 }
 
 function updateDetailCharts(idx) {
@@ -1377,7 +1402,6 @@ function exportDataAsJson() {
 =========================== */
 window.addEventListener("DOMContentLoaded", () => {
   loadDataFromJsonUrl();
-  toggleMode("general");
 });
 </script>
 </body>
