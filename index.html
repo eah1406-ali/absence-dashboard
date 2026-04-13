@@ -125,7 +125,7 @@
       overflow-y: auto;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       z-index: 1000;
-      display: none; /* مخفي افتراضياً */
+      display: none; 
       flex-direction: column;
     }
     .custom-select-options.open {
@@ -175,7 +175,7 @@
       font-weight: 800;
       background: #f0f7fa;
       position: sticky;
-      top: 55px; /* بعد مربع البحث مباشرة */
+      top: 55px; 
       z-index: 1;
     }
 
@@ -229,8 +229,7 @@
     .data-table th { background-color: var(--primary); color: #fff; padding: 12px 10px; font-weight: 700; white-space: nowrap; }
     .data-table td { padding: 10px; border-bottom: 1px solid #eee; color: var(--text-dark); }
     .data-table tbody tr:hover { background-color: #f1f8e9; }
-    .data-table tbody tr td:last-child { font-weight: 800; color: #e74c3c; }
-
+    
     .section-title {
       font-size: 19px;
       margin: 10px 0 18px;
@@ -253,6 +252,13 @@
       display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px;
       font-size: 12px; font-weight: 800; background: #f3f6f9; border: 1px solid #e7edf3;
       color: var(--text-muted); justify-content: center;
+    }
+
+    /* نص لم يتم التثبيت */
+    .unconfirmed-data {
+      color: #8B0000;
+      font-weight: 800;
+      font-size: 12px;
     }
 
     @media (max-width: 900px) {
@@ -433,9 +439,18 @@ async function loadDataFromJsonUrl() {
 
 function processPayload(rawDays, rawSchools) {
     days = rawDays.map(x => String(x));
+    
     schools = rawSchools.map((s, idx) => {
-      let vals = (Array.isArray(s.values) ? s.values : []).map(v => (typeof v === "number" ? v : 0));
-      let avg = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+      // ✅ قراءة القيم وتمرير "لم يتم التثبيت" كما هي، والباقي أرقام
+      let vals = (Array.isArray(s.values) ? s.values : []).map(v => {
+        if (v === "لم يتم التثبيت") return v;
+        return typeof v === "number" ? v : 0;
+      });
+
+      // ✅ استخراج القيم الرقمية فقط لحساب المتوسط
+      let numericVals = vals.filter(v => typeof v === "number");
+      let avg = numericVals.length ? numericVals.reduce((a,b)=>a+b,0) / numericVals.length : 0;
+      
       return {
         id: idx,
         code: String(s.code),
@@ -447,8 +462,8 @@ function processPayload(rawDays, rawSchools) {
 
     totalSchoolsCount = schools.length;
 
-    initCustomSelector(); // إنشاء القائمة المنسدلة بالمربعات
-    handleSelectionChange(); // استدعاء دالة التحديث لبدء العرض الافتراضي
+    initCustomSelector(); 
+    handleSelectionChange(); 
 
     document.getElementById("noDataSection").classList.add("hidden");
     document.getElementById("dashboardSection").classList.remove("hidden");
@@ -462,7 +477,6 @@ function initCustomSelector() {
   const list = document.getElementById("checkboxList");
   list.innerHTML = "";
   
-  // الترتيب الأبجدي لتسهيل البحث
   let sortedForDropdown = [...schools].sort((a, b) => a.name.localeCompare(b.name));
 
   sortedForDropdown.forEach(s => {
@@ -477,7 +491,6 @@ function toggleDropdown() {
   document.getElementById("dropdownOptions").classList.toggle("open");
 }
 
-// إغلاق القائمة عند النقر خارجها
 document.addEventListener("click", function(e) {
   const container = document.getElementById("customSelectContainer");
   if (container && !container.contains(e.target)) {
@@ -485,7 +498,6 @@ document.addEventListener("click", function(e) {
   }
 });
 
-// وظيفة البحث داخل القائمة المنسدلة
 function filterSchools() {
   const term = document.getElementById("schoolSearch").value.toLowerCase();
   const items = document.querySelectorAll(".school-item");
@@ -495,11 +507,9 @@ function filterSchools() {
   });
 }
 
-// زر تحديد/إلغاء تحديد الكل
 function toggleSelectAll(masterCb) {
   const cbs = document.querySelectorAll(".school-cb");
   cbs.forEach(cb => {
-    // تحديد العناصر الظاهرة فقط (في حال استخدم المستخدم البحث) أو كلها
     if(cb.closest('.school-item').style.display !== "none") {
       cb.checked = masterCb.checked;
     }
@@ -507,17 +517,14 @@ function toggleSelectAll(masterCb) {
   handleSelectionChange();
 }
 
-// هذه الدالة تعمل عند تغيير حالة أي مربع اختيار
 function handleSelectionChange() {
   const cbs = Array.from(document.querySelectorAll(".school-cb"));
   const checkedCbs = cbs.filter(cb => cb.checked);
   const checkedCount = checkedCbs.length;
   
-  // تحديث حالة زر "تحديد الكل"
   const masterCb = document.getElementById("selectAllCheckbox");
   masterCb.checked = (checkedCount === cbs.length);
   
-  // تحديث العنوان
   const title = document.getElementById("dropdownTitle");
   if (checkedCount === 0) {
     title.textContent = "لم يتم تحديد أي مدرسة";
@@ -527,7 +534,6 @@ function handleSelectionChange() {
     title.textContent = `تم تحديد (${checkedCount}) مدرسة`;
   }
 
-  // جمع IDs المدارس المحددة لتحديث اللوحة
   const selectedIds = checkedCbs.map(cb => parseInt(cb.value));
   updateDashboard(selectedIds);
 }
@@ -542,7 +548,6 @@ function updateDashboard(selectedIds) {
     return;
   }
 
-  // فلترة وترتيب المدارس تصاعدياً من الأقل للأعلى غياباً
   let activeSchools = schools.filter(s => selectedIds.includes(s.id));
   activeSchools.sort((a, b) => a.avg - b.avg);
 
@@ -569,8 +574,8 @@ function clearDashboard() {
 
 function updateKPIs(activeSchools) {
   let groupAvg = activeSchools.reduce((sum, s) => sum + s.avg, 0) / activeSchools.length;
-  let topS = activeSchools[activeSchools.length - 1]; // الأعلى (لأن الترتيب تصاعدي)
-  let lowS = activeSchools[0]; // الأقل
+  let topS = activeSchools[activeSchools.length - 1]; 
+  let lowS = activeSchools[0]; 
 
   document.getElementById("kpiOverallAvg").textContent = (groupAvg * 100).toFixed(2) + "٪";
   document.getElementById("kpiTopSchool").textContent = topS.name;
@@ -600,13 +605,15 @@ function updateCharts(activeSchools) {
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 
+  // ✅ استخدام null بدلاً من الأرقام في حالة عدم التثبيت لكي لا يظهر في الرسم البياني
   let trendDatasets = activeSchools.map((s, i) => ({
       label: s.name,
-      data: s.values.map(v => v * 100),
+      data: s.values.map(v => typeof v === "number" ? v * 100 : null),
       borderColor: colors[i % colors.length],
       borderWidth: 2,
       fill: false,
       tension: 0.3,
+      spanGaps: false, // لا توصل الخط إذا كان هناك يوم مفقود
       pointRadius: activeSchools.length > 10 ? 0 : 3 
   }));
 
@@ -619,8 +626,9 @@ function updateCharts(activeSchools) {
     }
   });
 
+  // ✅ استخراج القيم الرقمية فقط لحساب المتوسط اليومي للمجموعة
   let groupDailyAvg = days.map((_, dIdx) => {
-    let dayVals = activeSchools.map(s => s.values[dIdx]).filter(v => v !== undefined);
+    let dayVals = activeSchools.map(s => s.values[dIdx]).filter(v => typeof v === "number");
     return dayVals.length ? (dayVals.reduce((a,b)=>a+b,0) / dayVals.length) * 100 : 0;
   });
 
@@ -638,9 +646,8 @@ function updateCharts(activeSchools) {
    6) تحديث الجدول
 =========================== */
 function updateTable(activeSchools) {
-  let thHtml = `<th>م</th><th>الرقم الوزاري</th><th>اسم المدرسة</th>`;
+  let thHtml = `<th>م</th><th>الرقم الوزاري</th><th>اسم المدرسة</th><th>متوسط المدرسة</th>`;
   days.forEach(d => thHtml += `<th>${d}</th>`);
-  thHtml += `<th>متوسط المدرسة</th>`;
   document.getElementById("tableHead").innerHTML = thHtml;
 
   let tbHtml = "";
@@ -648,14 +655,19 @@ function updateTable(activeSchools) {
     tbHtml += `<tr>
       <td>${idx + 1}</td>
       <td>${s.code}</td>
-      <td style="font-weight:700;">${s.name}</td>`;
+      <td style="font-weight:700;">${s.name}</td>
+      <td style="font-weight:800; color:#e74c3c;">${(s.avg * 100).toFixed(2)}%</td>`; 
     
     s.values.forEach(v => {
-      tbHtml += `<td>${(v * 100).toFixed(2)}%</td>`;
+      // ✅ فحص نوع القيمة، إذا كانت غير رقمية اطبعها كما هي بتنسيق مختلف
+      if (v === "لم يتم التثبيت") {
+        tbHtml += `<td class="unconfirmed-data">${v}</td>`;
+      } else {
+        tbHtml += `<td>${(v * 100).toFixed(2)}%</td>`;
+      }
     });
     
-    tbHtml += `<td>${(s.avg * 100).toFixed(2)}%</td>
-    </tr>`;
+    tbHtml += `</tr>`;
   });
   document.getElementById("tableBody").innerHTML = tbHtml;
 }
@@ -711,7 +723,16 @@ if (IS_ADMIN) {
       for (let i = headerRowIndex + 1; i < rows.length; i++) {
         const row = rows[i];
         if (!row || row.length < 2 || !row[0]) continue;
-        const vals = validCols.map(c => typeof row[c] === "number" ? row[c] : 0);
+        
+        // ✅ التعرف على نص "لم يتم التثبيت" في ملف الإكسل وإبقائه
+        const vals = validCols.map(c => {
+          let cellValue = row[c];
+          if (typeof cellValue === "string" && cellValue.trim() === "لم يتم التثبيت") {
+            return "لم يتم التثبيت";
+          }
+          return typeof cellValue === "number" ? cellValue : 0;
+        });
+
         if (vals.length > 0) {
           tempSchools.push({ code: String(row[0]), name: String(row[1] || row[0]), values: vals });
         }
