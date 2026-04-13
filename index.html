@@ -256,9 +256,10 @@
 
     /* نص لم يتم التثبيت */
     .unconfirmed-data {
-      color: #8B0000;
+      color: #8B0000 !important;
       font-weight: 800;
       font-size: 12px;
+      background-color: #ffe6e6; /* خلفية خفيفة لتمييز الخلية */
     }
 
     @media (max-width: 900px) {
@@ -441,13 +442,14 @@ function processPayload(rawDays, rawSchools) {
     days = rawDays.map(x => String(x));
     
     schools = rawSchools.map((s, idx) => {
-      // ✅ قراءة القيم وتمرير "لم يتم التثبيت" كما هي، والباقي أرقام
+      // ✅ قراءة القيم وتمرير أي نص (مثل "لم يتم التثبيت") كما هو
       let vals = (Array.isArray(s.values) ? s.values : []).map(v => {
-        if (v === "لم يتم التثبيت") return v;
-        return typeof v === "number" ? v : 0;
+        if (typeof v === "string" && isNaN(parseFloat(v))) return v.trim();
+        let num = parseFloat(v);
+        return isNaN(num) ? 0 : num;
       });
 
-      // ✅ استخراج القيم الرقمية فقط لحساب المتوسط
+      // ✅ استخراج القيم الرقمية فقط لحساب متوسط المدرسة متجاهلاً النصوص
       let numericVals = vals.filter(v => typeof v === "number");
       let avg = numericVals.length ? numericVals.reduce((a,b)=>a+b,0) / numericVals.length : 0;
       
@@ -605,7 +607,7 @@ function updateCharts(activeSchools) {
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 
-  // ✅ استخدام null بدلاً من الأرقام في حالة عدم التثبيت لكي لا يظهر في الرسم البياني
+  // ✅ استخدام null للنصوص لتخطيها في الرسم البياني
   let trendDatasets = activeSchools.map((s, i) => ({
       label: s.name,
       data: s.values.map(v => typeof v === "number" ? v * 100 : null),
@@ -613,7 +615,7 @@ function updateCharts(activeSchools) {
       borderWidth: 2,
       fill: false,
       tension: 0.3,
-      spanGaps: false, // لا توصل الخط إذا كان هناك يوم مفقود
+      spanGaps: false,
       pointRadius: activeSchools.length > 10 ? 0 : 3 
   }));
 
@@ -626,7 +628,7 @@ function updateCharts(activeSchools) {
     }
   });
 
-  // ✅ استخراج القيم الرقمية فقط لحساب المتوسط اليومي للمجموعة
+  // ✅ استخراج القيم الرقمية فقط لحساب المتوسط اليومي
   let groupDailyAvg = days.map((_, dIdx) => {
     let dayVals = activeSchools.map(s => s.values[dIdx]).filter(v => typeof v === "number");
     return dayVals.length ? (dayVals.reduce((a,b)=>a+b,0) / dayVals.length) * 100 : 0;
@@ -659,8 +661,8 @@ function updateTable(activeSchools) {
       <td style="font-weight:800; color:#e74c3c;">${(s.avg * 100).toFixed(2)}%</td>`; 
     
     s.values.forEach(v => {
-      // ✅ فحص نوع القيمة، إذا كانت غير رقمية اطبعها كما هي بتنسيق مختلف
-      if (v === "لم يتم التثبيت") {
+      // ✅ طباعة النص باللون الأحمر الغامق إذا لم يكن رقماً
+      if (typeof v === "string") {
         tbHtml += `<td class="unconfirmed-data">${v}</td>`;
       } else {
         tbHtml += `<td>${(v * 100).toFixed(2)}%</td>`;
@@ -724,11 +726,13 @@ if (IS_ADMIN) {
         const row = rows[i];
         if (!row || row.length < 2 || !row[0]) continue;
         
-        // ✅ التعرف على نص "لم يتم التثبيت" في ملف الإكسل وإبقائه
+        // ✅ التعرف على أي نص في ملف الإكسل وإبقائه كما هو
         const vals = validCols.map(c => {
           let cellValue = row[c];
-          if (typeof cellValue === "string" && cellValue.trim() === "لم يتم التثبيت") {
-            return "لم يتم التثبيت";
+          if (typeof cellValue === "string") {
+             let parsed = parseFloat(cellValue);
+             if (!isNaN(parsed)) return parsed;
+             if (cellValue.trim() !== "") return cellValue.trim();
           }
           return typeof cellValue === "number" ? cellValue : 0;
         });
@@ -740,7 +744,7 @@ if (IS_ADMIN) {
 
       if (tempSchools.length > 0 && tempDays.length > 0) {
         processPayload(tempDays, tempSchools);
-        alert("تم استيراد البيانات من Excel بنجاح.");
+        alert("تم استيراد البيانات من Excel بنجاح. راجع الجدول للتأكد من ظهور حالة (لم يتم التثبيت) باللون الأحمر.");
       } else {
         alert("تأكد من تنسيق ملف Excel.");
       }
