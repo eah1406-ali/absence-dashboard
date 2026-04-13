@@ -3,22 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاش</title>
+  <title>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاشر</title>
 
-  <!-- ✅ حل خطأ favicon.ico 404 -->
   <link rel="icon" href="data:,">
 
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- نحتاج XLSX فقط في وضع الإدارة (admin) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     :root {
-      --primary: #8AB6D6;
-      --secondary: #B8E0D2;
+      --primary: #2C5F2D; /* تعديل طفيف للون بناء على تفضيلاتك المهنية السابقة */
+      --secondary: #97BC62;
       --accent: #D7BCE8;
       --bg-color: #F8F9FA;
       --text-dark: #2C3E50;
@@ -33,10 +31,9 @@
       color: var(--text-dark);
     }
 
-    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #749EBA; }
 
     header {
       background: linear-gradient(135deg, #ffffff 0%, #f0f7fa 100%);
@@ -45,7 +42,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid var(--accent);
+      border-bottom: 3px solid var(--secondary);
       box-shadow: 0 4px 15px rgba(0,0,0,0.03);
       position: sticky;
       top: 0;
@@ -79,76 +76,43 @@
       font-family: 'Tajawal', sans-serif;
       font-weight: 700;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
       white-space: nowrap;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
 
-    .btn.primary-action {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-    }
-    .btn.primary-action:hover { background: #749EBA; }
+    .btn.primary-action { background: var(--primary); color: #fff; border: none; }
+    .btn.pdf-btn { background: #e74c3c; color: white; border: none; }
 
-    .btn.secondary {
-      background: var(--secondary);
-      border: none;
-      color: #2b5745;
-    }
-
-    .btn.pdf-btn {
-      background: #ff6b6b;
-      color: white;
-      border: none;
-    }
-    .btn.pdf-btn:hover { background: #e55555; }
-
-    /* ✅ الهيدر: تجميع عناصر التحكم */
-    .header-controls{
+    .header-controls {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      justify-content: flex-start;
     }
 
-    .header-select-wrap{
+    .header-select-wrap {
       display: flex;
       align-items: center;
       gap: 8px;
-      min-width: 260px;
     }
 
-    .header-select-label{
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-dark);
-      white-space: nowrap;
-    }
-
-    select, input[type="file"] {
+    select[multiple] {
       background: var(--bg-color);
       color: var(--text-dark);
       border-radius: 8px;
       border: 1px solid #D1D8DD;
-      padding: 9px 10px;
+      padding: 5px;
       font-size: 13px;
       font-family: 'Tajawal', sans-serif;
       font-weight: 600;
       cursor: pointer;
       outline: none;
-      width: 100%;
-      box-sizing: border-box;
+      width: 250px;
+      height: 70px;
     }
-    select:focus { border-color: var(--primary); }
-
+    
     .hidden { display: none !important; }
-
     .layout { display: block; min-height: calc(100vh - 80px); }
     main { padding: 20px 22px; overflow-y: auto; }
 
@@ -164,19 +128,15 @@
       border-radius: 12px;
       padding: 16px 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      transition: transform 0.3s ease;
       border: 1px solid rgba(0,0,0,0.02);
     }
-
-    .kpi:hover { transform: translateY(-3px); }
 
     .kpi-title { font-size: 13px; color: var(--text-muted); font-weight: 700; }
     .kpi-value { font-size: 26px; font-weight: 800; margin-top: 8px; color: var(--primary); }
     .kpi-sub { font-size: 12px; color: #95a5a6; margin-top: 4px; font-weight: 500; }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .grid-3x3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
+    
     .panel {
       background: var(--card-bg);
       border-radius: 12px;
@@ -192,11 +152,39 @@
       font-weight: 800;
       border-bottom: 2px solid #F0F0F0;
       padding-bottom: 8px;
-      display: inline-block;
     }
 
-    canvas { width: 100% !important; height: 220px !important; }
-    .small-chart canvas { height: 200px !important; }
+    canvas { width: 100% !important; height: 260px !important; }
+
+    /* تنسيق جدول البيانات */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 13px;
+    }
+    .data-table th {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 12px 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      color: var(--text-dark);
+    }
+    .data-table tbody tr:hover {
+      background-color: #f1f8e9;
+    }
+    .data-table tbody tr td:last-child {
+      font-weight: 800;
+      color: #e74c3c;
+    }
 
     .section-title {
       font-size: 19px;
@@ -206,7 +194,6 @@
       display: flex;
       align-items: center;
     }
-
     .section-title::before {
       content: "";
       display: inline-block;
@@ -225,8 +212,6 @@
       border-radius: 10px;
       color: var(--text-muted);
       font-size: 13px;
-      line-height: 1.7;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
 
     .status-pill {
@@ -239,125 +224,14 @@
       background: #f3f6f9;
       border: 1px solid #e7edf3;
       color: var(--text-muted);
-      gap: 6px;
-      white-space: nowrap;
     }
 
-    .pdf-export-container { background: white; padding: 18px; border-radius: 14px; }
-
-    #allSchoolsPrint {
-      visibility: hidden;
-      position: absolute;
-      left: -99999px;
-      top: -99999px;
-      width: 100%;
-    }
-
-    .school-print-page {
-      page-break-after: always;
-      break-after: page;
-      padding: 20px;
-      background: white;
-    }
-
-    .school-print-header {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: var(--text-dark);
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 10px;
-    }
-
-    .school-print-sub {
-      font-size: 15px;
-      margin-bottom: 20px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    @media print {
-      header { display: none !important; }
-      body { background: white; color: black; }
-      main { padding: 0; }
-      .panel { page-break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
-
-      body.print-general #generalSection { display: block !important; }
-      body.print-general #detailSection,
-      body.print-general #allSchoolsPrint { display: none !important; }
-
-      body.print-detail #generalSection,
-      body.print-detail #detailSection { display: none !important; }
-      body.print-detail #allSchoolsPrint {
-        visibility: visible !important;
-        position: static !important;
-        left: 0; top: 0;
-      }
-    }
-
-    /* =========================
-       ✅ الجوال: هيدر أصغر + الأزرار صفّين + القائمة المنسدلة بالأعلى
-       ========================= */
     @media (max-width: 900px) {
-      header{
-        padding: 10px 12px;        /* ✅ تصغير الهيدر */
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      header h1{
-        font-size: 18px;           /* ✅ تصغير العنوان */
-      }
-      .header-subtitle{
-        font-size: 12px;
-        margin-top: 3px;
-      }
-
-      /* ✅ ترتيب الهيدر: اجعل القائمة المنسدلة تحت العنوان */
-      header .left-block{ width: 100%; }
-      header .right-block{ width: 100%; }
-
-      .header-controls{
-        width: 100%;
-        display: grid;             /* ✅ أزرار صفين */
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .header-select-wrap{
-        width: 100%;
-        min-width: 0;
-        grid-column: 1 / -1;       /* ✅ dropdown يأخذ عرض كامل */
-      }
-      .header-select-label{ display: none; } /* اختصار بالجوال */
-
-      .status-pill{
-        grid-column: 1 / -1;       /* ✅ حالة البيانات سطر لحالها */
-        justify-content: center;
-      }
-
-      .btn{ width: 100%; padding: 10px 10px; font-size: 13px; }
-
-      main{ padding: 12px 12px 18px; }
-
-      .kpi-row{
-        grid-template-columns: repeat(2, minmax(0,1fr));
-        gap: 10px;
-        margin-bottom: 14px;
-      }
-      .kpi{ padding: 12px; }
-      .kpi-value{ font-size: 20px; }
-
-      .grid-3{ grid-template-columns: 1fr; gap: 12px; }
-      .grid-3x3{ grid-template-columns: 1fr; gap: 12px; }
-
-      canvas{ height: 260px !important; }
-      .small-chart canvas{ height: 240px !important; }
-    }
-
-    @media (max-width: 520px){
-      .kpi-row{ grid-template-columns: 1fr; }
-      .header-controls{ grid-template-columns: 1fr; } /* ✅ صف واحد لو شاشة صغيرة جدًا */
-      .btn{ font-size: 13px; }
+      header { flex-direction: column; align-items: stretch; }
+      .header-controls { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      select[multiple] { width: 100%; }
     }
   </style>
 </head>
@@ -365,25 +239,22 @@
 <body>
 <header>
   <div class="left-block">
-    <h1>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاش</h1>
-    <div class="header-subtitle">عرض مباشر للبيانات + تقارير PDF وطباعة</div>
+    <h1>متابعة الانضباط المدرسي لشهر رمضان المبارك - النطاق العاشر</h1>
+    <div class="header-subtitle">لوحة التحكم التفاعلية والمقارنة المعيارية</div>
   </div>
 
   <div class="right-block">
     <div class="header-controls">
-
-      <!-- ✅ القائمة المنسدلة في الهيدر -->
       <div class="header-select-wrap">
-        <div class="header-select-label">اختيار:</div>
-        <select id="schoolSelect" onchange="updateDetail()" disabled></select>
+        <select id="schoolSelect" multiple onchange="updateView()" disabled title="اضغط Ctrl أو Cmd لتحديد أكثر من مدرسة للمقارنة"></select>
+        <button class="btn" style="height:70px;" onclick="selectAllSchools()">تحديد الكل</button>
       </div>
 
-      <div class="status-pill" id="dataStatus">بانتظار تحميل البيانات...</div>
-
-      <button class="btn" onclick="refreshData()">تحديث البيانات</button>
-      <button class="btn pdf-btn" onclick="exportCurrentViewToPDF()">تصدير الصفحة الحالية</button>
-      <button class="btn primary-action" onclick="printGeneral()">تصدير الإحصائيات العامة</button>
-      <button class="btn secondary" onclick="printAllSchoolsDetail()">تصدير إحصائيات المدارس</button>
+      <div style="display:flex; flex-direction: column; gap: 5px;">
+          <div class="status-pill" id="dataStatus">بانتظار تحميل البيانات...</div>
+          <button class="btn primary-action" onclick="refreshData()">تحديث البيانات</button>
+          <button class="btn pdf-btn" onclick="exportCurrentViewToPDF()">تصدير PDF</button>
+      </div>
     </div>
   </div>
 </header>
@@ -399,102 +270,65 @@
       </p>
     </section>
 
-    <section id="generalSection" class="hidden pdf-export-container">
-      <div class="section-title">نظرة عامة على معدلات الغياب</div>
+    <section id="dashboardSection" class="hidden">
+      <div class="section-title">مؤشرات الأداء للمدارس المحددة</div>
 
       <div class="kpi-row">
         <div class="kpi">
-          <div class="kpi-title">متوسط الغياب العام</div>
+          <div class="kpi-title">متوسط غياب المجموعة المحددة</div>
           <div class="kpi-value" id="kpiOverallAvg">-</div>
-          <div class="kpi-sub">متوسط الغياب لجميع المدارس</div>
+          <div class="kpi-sub">المتوسط العام للمدارس المعروضة</div>
         </div>
 
         <div class="kpi">
-          <div class="kpi-title">أعلى مدرسة غيابًا</div>
+          <div class="kpi-title">أعلى مدرسة غياباً (بالمجموعة)</div>
           <div class="kpi-value" id="kpiTopSchool" style="color:#e74c3c;">-</div>
           <div class="kpi-sub" id="kpiTopSchoolValue"></div>
         </div>
 
         <div class="kpi">
-          <div class="kpi-title">أقل مدرسة غيابًا</div>
+          <div class="kpi-title">أقل مدرسة غياباً (بالمجموعة)</div>
           <div class="kpi-value" id="kpiLowSchool" style="color:#2ecc71;">-</div>
           <div class="kpi-sub" id="kpiLowSchoolValue"></div>
         </div>
 
         <div class="kpi">
-          <div class="kpi-title">إجمالي المدارس</div>
+          <div class="kpi-title">عدد المدارس المعروضة</div>
           <div class="kpi-value" id="kpiSchoolCount">-</div>
-          <div class="kpi-sub">حسب مصدر البيانات الحالي</div>
+          <div class="kpi-sub">من إجمالي المدارس</div>
         </div>
       </div>
 
-      <div class="section-title">التحليل البياني العام</div>
-
+      <div class="section-title">التحليل البياني للمقارنة (مرتب من الأقل غياباً)</div>
+      
       <div class="grid-3">
-        <div class="panel"><h4>متوسط الغياب لكل يوم</h4><canvas id="chartAvgByDay"></canvas></div>
-        <div class="panel"><h4>متوسط الغياب لكل مدرسة</h4><canvas id="chartAvgBySchool"></canvas></div>
-        <div class="panel"><h4>أعلى 5 مدارس غيابًا</h4><canvas id="chartTop5"></canvas></div>
-        <div class="panel"><h4>أقل 5 مدارس غيابًا</h4><canvas id="chartBottom5"></canvas></div>
-        <div class="panel"><h4>توزيع متوسطات الغياب</h4><canvas id="chartDistribution"></canvas></div>
-        <div class="panel"><h4>اليوم الأعلى والأقل غيابًا</h4><canvas id="chartBestWorstDay"></canvas></div>
-        <div class="panel"><h4>مقارنة 5 مدارس (تتبع)</h4><canvas id="chartMatrix"></canvas></div>
-        <div class="panel"><h4>انحراف المدارس عن المتوسط العام</h4><canvas id="chartDeviation"></canvas></div>
-        <div class="panel"><h4>مسار واتجاه الغياب العام</h4><canvas id="chartTrend"></canvas></div>
-        <div class="panel"><h4>توزيع المدارس (فوق/تحت المتوسط)</h4><canvas id="chartAboveBelow"></canvas></div>
-        <div class="panel"><h4>أول 10 مدارس</h4><canvas id="chartFirst10"></canvas></div>
-        <div class="panel"><h4>آخر 10 مدارس</h4><canvas id="chartLast10"></canvas></div>
-        <div class="panel"><h4>مدى تباين الغياب</h4><canvas id="chartRange"></canvas></div>
-        <div class="panel"><h4>مقارنة (اليوم الأول vs الأخير)</h4><canvas id="chartFirstLastDay"></canvas></div>
-        <div class="panel"><h4>مقارنة خاصة (اليوم 3 vs 4)</h4><canvas id="chartDay3vs4"></canvas></div>
+        <div class="panel">
+          <h4>متوسط الغياب للمدارس المحددة</h4>
+          <canvas id="chartAvgSort"></canvas>
+        </div>
+        <div class="panel">
+          <h4>تتبع الغياب اليومي (مقارنة المدارس)</h4>
+          <canvas id="chartTrendCompare"></canvas>
+        </div>
+        <div class="panel">
+          <h4>متوسط الغياب اليومي للمجموعة المعروضة</h4>
+          <canvas id="chartDailyGroup"></canvas>
+        </div>
       </div>
+
+      <div class="section-title">جدول البيانات التفصيلي (مرتب من الأقل غياباً للأعلى)</div>
+      <div class="panel table-responsive">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr id="tableHead"></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
     </section>
 
-    <section id="detailSection" class="hidden pdf-export-container">
-      <div class="section-title">التحليل التفصيلي للمدرسة المختارة</div>
-
-      <div class="kpi-row">
-        <div class="kpi">
-          <div class="kpi-title">اسم المدرسة</div>
-          <div class="kpi-value" id="detailSchoolName" style="font-size:20px;">-</div>
-          <div class="kpi-sub" id="detailSchoolCode"></div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-title">متوسط غياب المدرسة</div>
-          <div class="kpi-value" id="detailSchoolAvg">-</div>
-          <div class="kpi-sub">مقارنة بجميع الأيام المرصودة</div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-title">متوسط الغياب العام</div>
-          <div class="kpi-value" id="detailOverallAvg">-</div>
-          <div class="kpi-sub">Benchmark</div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-title">الترتيب ضمن النطاق</div>
-          <div class="kpi-value" id="detailRank">-</div>
-          <div class="kpi-sub">حسب معدل الغياب التراكمي</div>
-        </div>
-      </div>
-
-      <div class="grid-3x3">
-        <div class="panel small-chart"><h4>اتجاه الغياب</h4><canvas id="dChartTrend"></canvas></div>
-        <div class="panel small-chart"><h4>مقارنة بالمتوسط العام لكل يوم</h4><canvas id="dChartVsAvgByDay"></canvas></div>
-        <div class="panel small-chart"><h4>أعلى وأقل يوم غياب</h4><canvas id="dChartBestWorstDay"></canvas></div>
-        <div class="panel small-chart"><h4>انحراف عن متوسط كل يوم</h4><canvas id="dChartDeviation"></canvas></div>
-        <div class="panel small-chart"><h4>مقارنة مع الأعلى غيابًا</h4><canvas id="dChartVsTop"></canvas></div>
-        <div class="panel small-chart"><h4>مقارنة مع الأقل غيابًا</h4><canvas id="dChartVsLow"></canvas></div>
-        <div class="panel small-chart"><h4>أول يوم vs آخر يوم</h4><canvas id="dChartFirstLast"></canvas></div>
-        <div class="panel small-chart"><h4>موقع المدرسة ضمن التوزيع</h4><canvas id="dChartPosition"></canvas></div>
-        <div class="panel small-chart"><h4>المدرسة مقابل الجميع</h4><canvas id="dChartSchoolVsOverall"></canvas></div>
-      </div>
-    </section>
-
-    <div id="allSchoolsPrint"></div>
-
-    <!-- ✅ أدوات الإدارة تظهر فقط عند ?admin=1 -->
-    <section id="adminTools" class="hidden" style="margin-top:16px;">
+    <section id="adminTools" class="hidden" style="margin-top:40px;">
       <div class="section-title">وضع الإدارة</div>
       <div class="note-box" style="margin-bottom:10px;">
         1) ارفع Excel هنا<br>
@@ -512,39 +346,25 @@
 
 <script>
 /* ===========================
-   1) إعدادات مصدر البيانات
+   1) الإعدادات
 =========================== */
 const DATA_URL = "https://eah1406-ali.github.io/absence-dashboard/data.json";
 const IS_ADMIN = new URLSearchParams(location.search).get("admin") === "1";
 
-/* ===========================
-   2) متغيرات العمل
-=========================== */
 let schools = [];
 let days = [];
+let totalSchoolsCount = 0;
 
-let schoolAverages = [];
-let overallAvg = 0;
-let avgByDay = [];
-let sortedByAvg = [];
-let topSchool = null;
-let lowSchool = null;
-let aboveCount = 0;
-let belowCount = 0;
+// الرسوم البيانية المحفوظة
+let cAvgSort = null;
+let cTrendCompare = null;
+let cDailyGroup = null;
 
-let charts = {};
-let dCharts = {};
-let allPrintBuilt = false;
-
-const pastel = ["#8AB6D6","#B8E0D2","#D7BCE8","#F9E79F","#F1948A","#F6D6AD","#EAEAEA"];
+// ألوان متناسقة للرسوم
+const colors = ["#2C5F2D","#97BC62","#8AB6D6","#F1948A","#D7BCE8","#F9E79F","#F6D6AD","#AAB7B8","#5DADE2","#AF7AC5"];
 
 Chart.defaults.font.family = "'Tajawal', sans-serif";
 Chart.defaults.font.size = 12;
-Chart.defaults.color = "#7F8C8D";
-
-function avg(arr) {
-  return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
-}
 
 function setStatus(text) {
   const el = document.getElementById("dataStatus");
@@ -552,73 +372,212 @@ function setStatus(text) {
 }
 
 /* ===========================
-   3) تحميل البيانات من JSON
+   2) جلب وتهيئة البيانات
 =========================== */
 async function loadDataFromJsonUrl() {
   try {
-    if (!DATA_URL || !DATA_URL.toLowerCase().includes(".json")) {
-      setStatus("لم يتم ربط مصدر البيانات (data.json) بشكل صحيح");
-      return;
-    }
-
-    setStatus("جاري تحميل البيانات...");
+    setStatus("جاري التحميل...");
     const res = await fetch(DATA_URL, { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
 
     const payload = await res.json();
-    if (!payload || !Array.isArray(payload.days) || !Array.isArray(payload.schools)) {
-      throw new Error("JSON format invalid");
-    }
-
-    days = payload.days.map(x => String(x));
-    schools = payload.schools.map(s => ({
-      code: String(s.code),
-      name: String(s.name || s.code),
-      values: (Array.isArray(s.values) ? s.values : []).map(v => (typeof v === "number" ? v : 0))
-    })).filter(s => s.values.length);
-
-    if (!schools.length || !days.length) {
-      setStatus("لا توجد بيانات كافية في المصدر");
-      return;
-    }
-
-    Object.values(charts).forEach(ch => { try { ch.destroy(); } catch(e){} });
-    Object.values(dCharts).forEach(ch => { try { ch.destroy(); } catch(e){} });
-    charts = {};
-    dCharts = {};
-
-    prepareMetrics();
-    initSelector();
-    fillKPIs();
-    createGeneralCharts();
-    createDetailCharts();
-    // افتراضيًا: النطاق كاملاً
-    showGeneral();
-
-    document.getElementById("noDataSection").classList.add("hidden");
-    document.getElementById("schoolSelect").disabled = false;
-    document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
-
-    allPrintBuilt = false;
-    setStatus("تم تحميل البيانات بنجاح ✅");
-
+    processPayload(payload.days, payload.schools);
   } catch (err) {
     console.error(err);
-    setStatus("تعذر تحميل البيانات (تحقق من رابط data.json)");
+    setStatus("تعذر التحميل (يتم العرض التجريبي أو تأكد من الرابط)");
   }
+}
+
+function processPayload(rawDays, rawSchools) {
+    days = rawDays.map(x => String(x));
+    schools = rawSchools.map((s, idx) => {
+      let vals = (Array.isArray(s.values) ? s.values : []).map(v => (typeof v === "number" ? v : 0));
+      let avg = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+      return {
+        id: idx,
+        code: String(s.code),
+        name: String(s.name || s.code),
+        values: vals,
+        avg: avg
+      };
+    }).filter(s => s.values.length);
+
+    totalSchoolsCount = schools.length;
+
+    initSelector();
+    selectAllSchools(); // افتراضياً تحديد وعرض الكل
+    document.getElementById("noDataSection").classList.add("hidden");
+    document.getElementById("dashboardSection").classList.remove("hidden");
+    document.getElementById("schoolSelect").disabled = false;
+    
+    setStatus("تم تحميل البيانات ✅");
+}
+
+function initSelector() {
+  const sel = document.getElementById("schoolSelect");
+  sel.innerHTML = "";
+  // ترتيب القائمة المنسدلة هجائياً لسهولة البحث
+  let sortedForDropdown = [...schools].sort((a, b) => a.name.localeCompare(b.name));
+  
+  sortedForDropdown.forEach((s) => {
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = s.name;
+    sel.appendChild(opt);
+  });
+}
+
+function selectAllSchools() {
+  const sel = document.getElementById("schoolSelect");
+  for(let i=0; i<sel.options.length; i++) {
+    sel.options[i].selected = true;
+  }
+  updateView();
+}
+
+/* ===========================
+   3) تحديث العرض بناءً على التحديد المتعدد
+=========================== */
+function updateView() {
+  const sel = document.getElementById("schoolSelect");
+  const selectedIds = Array.from(sel.selectedOptions).map(opt => parseInt(opt.value));
+  
+  if (selectedIds.length === 0) return; // لا تفعل شيء إذا لم يتم تحديد أي مدرسة
+
+  // سحب المدارس المحددة فقط
+  let activeSchools = schools.filter(s => selectedIds.includes(s.id));
+
+  // ✅ ترتيب المدارس المحددة من الأقل غياباً إلى الأعلى غياباً
+  activeSchools.sort((a, b) => a.avg - b.avg);
+
+  updateKPIs(activeSchools);
+  updateCharts(activeSchools);
+  updateTable(activeSchools);
+}
+
+function updateKPIs(activeSchools) {
+  let groupAvg = activeSchools.reduce((sum, s) => sum + s.avg, 0) / activeSchools.length;
+  let topS = activeSchools[activeSchools.length - 1]; // الأعلى غياباً (لأنها مرتبة تصاعدياً)
+  let lowS = activeSchools[0]; // الأقل غياباً
+
+  document.getElementById("kpiOverallAvg").textContent = (groupAvg * 100).toFixed(2) + "٪";
+  document.getElementById("kpiTopSchool").textContent = topS.name;
+  document.getElementById("kpiTopSchoolValue").textContent = (topS.avg * 100).toFixed(2) + "٪";
+  document.getElementById("kpiLowSchool").textContent = lowS.name;
+  document.getElementById("kpiLowSchoolValue").textContent = (lowS.avg * 100).toFixed(2) + "٪";
+  document.getElementById("kpiSchoolCount").textContent = `${activeSchools.length} / ${totalSchoolsCount}`;
+}
+
+/* ===========================
+   4) تحديث الرسوم البيانية الأساسية
+=========================== */
+function updateCharts(activeSchools) {
+  // تدمير الرسوم السابقة إن وجدت لتحديثها
+  if(cAvgSort) cAvgSort.destroy();
+  if(cTrendCompare) cTrendCompare.destroy();
+  if(cDailyGroup) cDailyGroup.destroy();
+
+  const names = activeSchools.map(s => s.name);
+  const avgs = activeSchools.map(s => s.avg * 100);
+
+  // 1. رسم متوسط الغياب (أعمدة)
+  cAvgSort = new Chart(document.getElementById("chartAvgSort"), {
+    type: "bar",
+    data: { 
+      labels: names, 
+      datasets: [{ label: "متوسط الغياب %", data: avgs, backgroundColor: "#8AB6D6", borderRadius: 4 }] 
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+  });
+
+  // 2. تتبع مسار الغياب اليومي (خطي) للمدارس
+  // إذا كان عدد المدارس كبير جداً، قد يصبح الرسم الخطي مزدحماً لكنه مطلوب للمقارنة
+  let trendDatasets = activeSchools.map((s, i) => ({
+      label: s.name,
+      data: s.values.map(v => v * 100),
+      borderColor: colors[i % colors.length],
+      borderWidth: 2,
+      fill: false,
+      tension: 0.3,
+      pointRadius: activeSchools.length > 10 ? 0 : 3 // إخفاء النقاط إذا زاد العدد لمنع التداخل
+  }));
+
+  cTrendCompare = new Chart(document.getElementById("chartTrendCompare"), {
+    type: "line",
+    data: { labels: days, datasets: trendDatasets },
+    options: { 
+      responsive: true, maintainAspectRatio: false, 
+      plugins: { legend: { display: activeSchools.length <= 15, position: 'bottom' } } 
+    }
+  });
+
+  // 3. متوسط المجموعة المحددة لكل يوم
+  let groupDailyAvg = days.map((_, dIdx) => {
+    let dayVals = activeSchools.map(s => s.values[dIdx]).filter(v => v !== undefined);
+    return dayVals.length ? (dayVals.reduce((a,b)=>a+b,0) / dayVals.length) * 100 : 0;
+  });
+
+  cDailyGroup = new Chart(document.getElementById("chartDailyGroup"), {
+    type: "bar",
+    data: {
+      labels: days,
+      datasets: [{ label: "المتوسط اليومي %", data: groupDailyAvg, backgroundColor: "#97BC62", borderRadius: 4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+  });
+}
+
+/* ===========================
+   5) بناء الجدول بناءً على التحديد
+=========================== */
+function updateTable(activeSchools) {
+  // بناء رأس الجدول
+  let thHtml = `<th>م</th><th>الرقم الوزاري</th><th>اسم المدرسة</th>`;
+  days.forEach(d => thHtml += `<th>${d}</th>`);
+  thHtml += `<th>متوسط المدرسة</th>`;
+  document.getElementById("tableHead").innerHTML = thHtml;
+
+  // بناء محتوى الجدول (مرتب بالفعل تصاعدياً)
+  let tbHtml = "";
+  activeSchools.forEach((s, idx) => {
+    tbHtml += `<tr>
+      <td>${idx + 1}</td>
+      <td>${s.code}</td>
+      <td style="font-weight:700;">${s.name}</td>`;
+    
+    s.values.forEach(v => {
+      tbHtml += `<td>${(v * 100).toFixed(2)}%</td>`;
+    });
+    
+    tbHtml += `<td>${(s.avg * 100).toFixed(2)}%</td>
+    </tr>`;
+  });
+  document.getElementById("tableBody").innerHTML = tbHtml;
 }
 
 function refreshData() {
   loadDataFromJsonUrl();
 }
 
+function exportCurrentViewToPDF() {
+  const elementToPrint = document.getElementById("dashboardSection");
+  const options = {
+    margin: 0.3,
+    filename: 'تقرير_الانضباط_المدرسي.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+  };
+  html2pdf().set(options).from(elementToPrint).save();
+}
+
 /* ===========================
-   4) وضع الإدارة: Excel -> بيانات
+   أدوات وضع الإدارة Excel
 =========================== */
 if (IS_ADMIN) {
   document.getElementById("adminTools").classList.remove("hidden");
-
   const fileInput = document.getElementById("fileInput");
+  
   fileInput.addEventListener("change", function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -628,628 +587,57 @@ if (IS_ADMIN) {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, {type: 'array'});
       const sheetName = workbook.SheetNames[0];
-      const ws = workbook.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1, defval:null});
+      
+      let tempSchools = [];
+      let tempDays = [];
+      let headerRowIndex = rows.findIndex(r => r && r[0] && String(r[0]).includes("الرقم الوزاري"));
+      if (headerRowIndex === -1) headerRowIndex = 0;
 
-      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null});
-      parseRowsDynamic(rows);
-
-      if (schools.length === 0 || days.length === 0) {
-        alert("لم يتم التعرف على المدارس أو الأيام. تأكد أن الصف الأول عناوين، وأن الأعمدة من الثالث فصاعدًا هي الأيام.");
-        return;
+      const headerRow = rows[headerRowIndex];
+      const validCols = [];
+      for (let c = 2; c < headerRow.length; c++) {
+        if (headerRow[c] != null && headerRow[c] !== "" && String(headerRow[c]).trim() !== "المعدل") {
+          tempDays.push(String(headerRow[c]).trim());
+          validCols.push(c);
+        }
       }
 
-      Object.values(charts).forEach(ch => { try { ch.destroy(); } catch(e){} });
-      Object.values(dCharts).forEach(ch => { try { ch.destroy(); } catch(e){} });
-      charts = {};
-      dCharts = {};
+      for (let i = headerRowIndex + 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row.length < 2 || !row[0]) continue;
+        const vals = validCols.map(c => typeof row[c] === "number" ? row[c] : 0);
+        if (vals.length > 0) {
+          tempSchools.push({ code: String(row[0]), name: String(row[1] || row[0]), values: vals });
+        }
+      }
 
-      prepareMetrics();
-      initSelector();
-      fillKPIs();
-      createGeneralCharts();
-      createDetailCharts();
-      showGeneral();
-
-      document.getElementById("noDataSection").classList.add("hidden");
-      document.getElementById("schoolSelect").disabled = false;
-      document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
-      allPrintBuilt = false;
-
-      alert("تم تحميل Excel في وضع الإدارة. يمكنك الآن تصدير data.json");
+      if (tempSchools.length > 0 && tempDays.length > 0) {
+        processPayload(tempDays, tempSchools);
+        alert("تم استيراد البيانات من Excel بنجاح.");
+      } else {
+        alert("تأكد من تنسيق ملف Excel.");
+      }
     };
     reader.readAsArrayBuffer(file);
   });
 }
 
-/* ===========================
-   5) تحليل Excel
-=========================== */
-function parseRowsDynamic(rows) {
-  schools = [];
-  days = [];
-  if (!rows || rows.length === 0) return;
-
-  let headerRowIndex = -1;
-
-  for (let i = 0; i < rows.length; i++) {
-    const r = rows[i];
-    if (!r || r.length < 3) continue;
-
-    const c0 = String(r[0] || "");
-    const c1 = String(r[1] || "");
-
-    if (c0.includes("الرقم الوزاري") && c1.includes("المدرسة")) {
-      headerRowIndex = i;
-      break;
-    }
-  }
-
-  if (headerRowIndex === -1) headerRowIndex = 0;
-
-  const headerRow = rows[headerRowIndex];
-  const validCols = [];
-
-  for (let c = 2; c < headerRow.length; c++) {
-    if (headerRow[c] != null && headerRow[c] !== "") {
-      const colName = String(headerRow[c]).trim();
-      if (colName !== "المعدل") {
-        days.push(colName);
-        validCols.push(c);
-      }
-    }
-  }
-
-  for (let i = headerRowIndex + 1; i < rows.length; i++) {
-    const row = rows[i];
-    if (!row || row.length < 2) continue;
-
-    const code = row[0];
-    const name = row[1];
-    if (code == null || code === "") continue;
-
-    const vals = [];
-    for (let c of validCols) {
-      const v = row[c];
-      if (typeof v === "number") vals.push(v);
-      else vals.push(0);
-    }
-
-    if (vals.length === 0) continue;
-
-    schools.push({
-      code: String(code),
-      name: String(name || code),
-      values: vals
-    });
-  }
-}
-
-function prepareMetrics() {
-  schoolAverages = schools.map(s => ({
-    code: s.code,
-    name: s.name,
-    avg: avg(s.values)
-  }));
-
-  overallAvg = avg(schoolAverages.map(s => s.avg));
-
-  const maxDays = Math.max(...schools.map(s => s.values.length));
-  avgByDay = [];
-  for (let d = 0; d < maxDays; d++) {
-    const vals = schools.map(s => s.values[d]).filter(v => typeof v === "number");
-    avgByDay.push(avg(vals));
-  }
-
-  sortedByAvg = [...schoolAverages].sort((a, b) => b.avg - a.avg);
-  topSchool = sortedByAvg[0];
-  lowSchool = sortedByAvg[sortedByAvg.length - 1];
-
-  aboveCount = schoolAverages.filter(s => s.avg > overallAvg).length;
-  belowCount = schoolAverages.length - aboveCount;
-}
-
-function initSelector() {
-  const sel = document.getElementById("schoolSelect");
-  sel.innerHTML = "";
-
-  const optAll = document.createElement("option");
-  optAll.value = "all";
-  optAll.textContent = "النطاق كاملاً";
-  sel.appendChild(optAll);
-
-  schools.forEach((s, idx) => {
-    const opt = document.createElement("option");
-    opt.value = String(idx);
-    opt.textContent = s.name;
-    sel.appendChild(opt);
-  });
-
-  sel.value = "all";
-}
-
-function fillKPIs() {
-  document.getElementById("kpiOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
-
-  document.getElementById("kpiTopSchool").textContent = topSchool ? topSchool.name : "-";
-  document.getElementById("kpiTopSchoolValue").textContent = topSchool ? (topSchool.avg * 100).toFixed(2) + "٪" : "";
-
-  document.getElementById("kpiLowSchool").textContent = lowSchool ? lowSchool.name : "-";
-  document.getElementById("kpiLowSchoolValue").textContent = lowSchool ? (lowSchool.avg * 100).toFixed(2) + "٪" : "";
-
-  document.getElementById("kpiSchoolCount").textContent = schools.length;
-}
-
-/* ===========================
-   عرض عام / عرض مدرسة
-=========================== */
-function showGeneral(){
-  document.getElementById("generalSection").classList.remove("hidden");
-  document.getElementById("detailSection").classList.add("hidden");
-}
-
-function showDetail(idx){
-  document.getElementById("generalSection").classList.add("hidden");
-  document.getElementById("detailSection").classList.remove("hidden");
-  updateDetailCharts(idx);
-}
-
-function updateDetail(){
-  const v = document.getElementById("schoolSelect").value;
-  if(v === "all"){
-    showGeneral();
-  }else{
-    showDetail(parseInt(v,10));
-  }
-}
-
-/* ===========================
-   6) الرسوم العامة
-=========================== */
-function createGeneralCharts() {
-  const labelsDays = days.slice(0, avgByDay.length);
-  const commonOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
-
-  charts.avgByDay = new Chart(document.getElementById("chartAvgByDay"), {
-    type: "bar",
-    data: { labels: labelsDays, datasets: [{ label: "متوسط الغياب ٪", data: avgByDay.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  charts.avgBySchool = new Chart(document.getElementById("chartAvgBySchool"), {
-    type: "bar",
-    data: { labels: schoolAverages.map(s => s.name), datasets: [{ label: "متوسط الغياب ٪", data: schoolAverages.map(s => s.avg * 100), backgroundColor: pastel[1], borderRadius: 4 }] },
-    options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-  });
-
-  const top5 = sortedByAvg.slice(0,5);
-  charts.top5 = new Chart(document.getElementById("chartTop5"), {
-    type: "bar",
-    data: { labels: top5.map(s => s.name), datasets: [{ data: top5.map(s => s.avg * 100), backgroundColor: pastel[4], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const bottom5 = sortedByAvg.slice(-5);
-  charts.bottom5 = new Chart(document.getElementById("chartBottom5"), {
-    type: "bar",
-    data: { labels: bottom5.map(s => s.name), datasets: [{ data: bottom5.map(s => s.avg * 100), backgroundColor: pastel[1], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const bins = [0,5,10,15,20,25,30,40,50,60,80];
-  const binCounts = new Array(bins.length - 1).fill(0);
-  schoolAverages.forEach(s => {
-    const val = s.avg * 100;
-    for (let i=0;i<bins.length-1;i++){
-      if (val >= bins[i] && val < bins[i+1]) { binCounts[i]++; break; }
-    }
-  });
-
-  charts.distribution = new Chart(document.getElementById("chartDistribution"), {
-    type: "bar",
-    data: { labels: bins.slice(0,-1).map((b,i)=>`${b} - ${bins[i+1]}٪`), datasets: [{ data: binCounts, backgroundColor: pastel[2], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const maxDayIdx = avgByDay.indexOf(Math.max(...avgByDay));
-  const minDayIdx = avgByDay.indexOf(Math.min(...avgByDay));
-  charts.bestWorstDay = new Chart(document.getElementById("chartBestWorstDay"), {
-    type: "bar",
-    data: { labels: [labelsDays[maxDayIdx] || "أعلى يوم", labelsDays[minDayIdx] || "أقل يوم"], datasets: [{ data: [avgByDay[maxDayIdx]*100, avgByDay[minDayIdx]*100], backgroundColor: [pastel[4], pastel[1]], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  charts.matrix = new Chart(document.getElementById("chartMatrix"), {
-    type: "line",
-    data: {
-      labels: labelsDays,
-      datasets: schools.slice(0,5).map((s,idx)=>({
-        label: s.name,
-        data: s.values.map(v=>v*100),
-        borderColor: pastel[idx % pastel.length],
-        tension: 0.4,
-        borderWidth: 2,
-        pointRadius: 3
-      }))
-    },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } }
-  });
-
-  charts.deviation = new Chart(document.getElementById("chartDeviation"), {
-    type: "bar",
-    data: {
-      labels: schoolAverages.map(s=>s.name),
-      datasets: [{ data: schoolAverages.map(s=>(s.avg - overallAvg)*100), backgroundColor: schoolAverages.map(s=> s.avg>=overallAvg ? pastel[4] : pastel[1]), borderRadius: 2 }]
-    },
-    options: { indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} }
-  });
-
-  charts.trend = new Chart(document.getElementById("chartTrend"), {
-    type: "line",
-    data: { labels: labelsDays, datasets: [{ data: avgByDay.map(v=>v*100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", fill: true, tension: 0.4, pointBackgroundColor: pastel[0] }] },
-    options: commonOptions
-  });
-
-  charts.aboveBelow = new Chart(document.getElementById("chartAboveBelow"), {
-    type: "doughnut",
-    data: { labels: ["فوق المتوسط","تحت أو يساوي المتوسط"], datasets: [{ data: [aboveCount, belowCount], backgroundColor: [pastel[4], pastel[1]], borderWidth: 0 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } }, cutout:'70%' }
-  });
-
-  const first10 = schoolAverages.slice(0,10);
-  charts.first10 = new Chart(document.getElementById("chartFirst10"), {
-    type: "bar",
-    data: { labels: first10.map(s=>s.name), datasets: [{ data:first10.map(s=>s.avg*100), backgroundColor: pastel[0], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const last10 = schoolAverages.slice(-10);
-  charts.last10 = new Chart(document.getElementById("chartLast10"), {
-    type: "bar",
-    data: { labels: last10.map(s=>s.name), datasets: [{ data:last10.map(s=>s.avg*100), backgroundColor: pastel[2], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const maxAvg = Math.max(...schoolAverages.map(s=>s.avg))*100;
-  const minAvg = Math.min(...schoolAverages.map(s=>s.avg))*100;
-  charts.range = new Chart(document.getElementById("chartRange"), {
-    type: "bar",
-    data: { labels:["أدنى متوسط","أعلى متوسط","متوسط عام"], datasets:[{ data:[minAvg,maxAvg,overallAvg*100], backgroundColor:[pastel[1],pastel[4],pastel[0]], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const firstIdx = 0;
-  const lastIdx = avgByDay.length - 1;
-  charts.firstLastDay = new Chart(document.getElementById("chartFirstLastDay"), {
-    type: "bar",
-    data: { labels:[labelsDays[firstIdx] || "أول يوم", labelsDays[lastIdx] || "آخر يوم"], datasets:[{ data:[avgByDay[firstIdx]*100, avgByDay[lastIdx]*100], backgroundColor:[pastel[3],pastel[5]], borderRadius: 4 }] },
-    options: commonOptions
-  });
-
-  const d3 = 2, d4 = 3;
-  charts.day3vs4 = new Chart(document.getElementById("chartDay3vs4"), {
-    type: "bar",
-    data: {
-      labels: schools.map(s=>s.name),
-      datasets:[
-        { label: days[d3] || "اليوم 3", data: schools.map(s=> (s.values[d3] || 0)*100), backgroundColor: pastel[0], borderRadius: 2 },
-        { label: days[d4] || "اليوم 4", data: schools.map(s=> (s.values[d4] || 0)*100), backgroundColor: pastel[3], borderRadius: 2 }
-      ]
-    },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } } }
-  });
-}
-
-/* ===========================
-   7) رسوم التفاصيل
-=========================== */
-function createDetailCharts() {
-  const ids = ["dChartTrend","dChartVsAvgByDay","dChartBestWorstDay","dChartDeviation","dChartVsTop","dChartVsLow","dChartFirstLast","dChartPosition","dChartSchoolVsOverall"];
-  ids.forEach(id => {
-    const ctx = document.getElementById(id).getContext("2d");
-    dCharts[id] = new Chart(ctx, {
-      type: "bar",
-      data: { labels: [], datasets: [] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-    });
-  });
-}
-
-function updateDetailCharts(idx) {
-  if (idx < 0 || idx >= schools.length) return;
-
-  const s = schools[idx];
-  const sAvg = avg(s.values);
-  const rank = sortedByAvg.findIndex(x => x.code === s.code) + 1;
-
-  document.getElementById("detailSchoolName").textContent = s.name;
-  document.getElementById("detailSchoolCode").textContent = "الرقم الوزاري: " + s.code;
-  document.getElementById("detailSchoolAvg").textContent = (sAvg * 100).toFixed(2) + "٪";
-  document.getElementById("detailRank").textContent = rank + " من " + schools.length;
-  document.getElementById("detailOverallAvg").textContent = (overallAvg * 100).toFixed(2) + "٪";
-
-  const labels = days.slice(0, s.values.length);
-
-  dCharts.dChartTrend.config.type = "line";
-  dCharts.dChartTrend.data = {
-    labels,
-    datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", fill: true, tension: 0.4 }]
-  };
-  dCharts.dChartTrend.update();
-
-  dCharts.dChartVsAvgByDay.config.type = "bar";
-  dCharts.dChartVsAvgByDay.data = {
-    labels,
-    datasets: [
-      { label: "المدرسة", data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 },
-      { label: "متوسط الجميع", data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[6], borderRadius: 4 }
-    ]
-  };
-  dCharts.dChartVsAvgByDay.options.plugins.legend.display = true;
-  dCharts.dChartVsAvgByDay.options.plugins.legend.position = 'bottom';
-  dCharts.dChartVsAvgByDay.update();
-
-  const maxVal = Math.max(...s.values);
-  const minVal = Math.min(...s.values);
-  const maxIdx = s.values.indexOf(maxVal);
-  const minIdx = s.values.indexOf(minVal);
-
-  dCharts.dChartBestWorstDay.data = {
-    labels: [labels[maxIdx], labels[minIdx]],
-    datasets: [{ data: [maxVal * 100, minVal * 100], backgroundColor: [pastel[4], pastel[1]], borderRadius: 4 }]
-  };
-  dCharts.dChartBestWorstDay.update();
-
-  dCharts.dChartDeviation.data = {
-    labels,
-    datasets: [{ data: s.values.map((v, i) => (v - (avgByDay[i] || 0)) * 100), backgroundColor: s.values.map((v, i) => v >= (avgByDay[i] || 0) ? pastel[4] : pastel[1]), borderRadius: 2 }]
-  };
-  dCharts.dChartDeviation.update();
-
-  const topData = schools.find(x => x.code === topSchool.code);
-  dCharts.dChartVsTop.config.type = "line";
-  dCharts.dChartVsTop.data = {
-    labels,
-    datasets: [
-      { label: s.name, data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 },
-      { label: topData.name, data: topData.values.map(v => v * 100), borderColor: pastel[4], tension: 0.4, borderDash: [5, 5] }
-    ]
-  };
-  dCharts.dChartVsTop.options.plugins.legend.display = true;
-  dCharts.dChartVsTop.options.plugins.legend.position = 'bottom';
-  dCharts.dChartVsTop.update();
-
-  const lowData = schools.find(x => x.code === lowSchool.code);
-  dCharts.dChartVsLow.config.type = "line";
-  dCharts.dChartVsLow.data = {
-    labels,
-    datasets: [
-      { label: s.name, data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 },
-      { label: lowData.name, data: lowData.values.map(v => v * 100), borderColor: pastel[1], tension: 0.4, borderDash: [5, 5] }
-    ]
-  };
-  dCharts.dChartVsLow.options.plugins.legend.display = true;
-  dCharts.dChartVsLow.options.plugins.legend.position = 'bottom';
-  dCharts.dChartVsLow.update();
-
-  const lastIdx = s.values.length - 1;
-  dCharts.dChartFirstLast.data = {
-    labels: [labels[0], labels[lastIdx]],
-    datasets: [{ data: [s.values[0] * 100, s.values[lastIdx] * 100], backgroundColor: [pastel[3], pastel[5]], borderRadius: 4 }]
-  };
-  dCharts.dChartFirstLast.update();
-
-  dCharts.dChartPosition.data = {
-    labels: schoolAverages.map(x => x.name),
-    datasets: [{ data: schoolAverages.map(x => x.avg * 100), backgroundColor: schoolAverages.map(x => x.code === s.code ? pastel[0] : pastel[6]), borderRadius: 2 }]
-  };
-  dCharts.dChartPosition.options.scales = { x: { display: false } };
-  dCharts.dChartPosition.update();
-
-  dCharts.dChartSchoolVsOverall.data = {
-    labels,
-    datasets: [
-      { label: "المدرسة", data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 },
-      { label: "الجميع", data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[2], borderRadius: 4 }
-    ]
-  };
-  dCharts.dChartSchoolVsOverall.options.plugins.legend.display = true;
-  dCharts.dChartSchoolVsOverall.options.plugins.legend.position = 'bottom';
-  dCharts.dChartSchoolVsOverall.update();
-}
-
-/* ===========================
-   8) طباعة كل المدارس
-=========================== */
-function buildAllSchoolsPrint() {
-  const container = document.getElementById("allSchoolsPrint");
-  container.innerHTML = "";
-
-  schools.forEach(s => {
-    const page = document.createElement("div");
-    page.className = "school-print-page";
-
-    const h = document.createElement("div");
-    h.className = "school-print-header";
-    h.textContent = s.name;
-    page.appendChild(h);
-
-    const sub = document.createElement("div");
-    sub.className = "school-print-sub";
-    sub.textContent = "الرقم الوزاري: " + s.code;
-    page.appendChild(sub);
-
-    const grid = document.createElement("div");
-    grid.className = "grid-3x3";
-    page.appendChild(grid);
-
-    const chartIds = ["trend","vsAvg","bestWorst","dev","vsTop","vsLow","firstLast","position","schoolVsOverall"];
-    const localCanvases = {};
-
-    chartIds.forEach(id => {
-      const panel = document.createElement("div");
-      panel.className = "panel small-chart";
-
-      const title = document.createElement("h4");
-      switch(id) {
-        case "trend": title.textContent = "اتجاه الغياب"; break;
-        case "vsAvg": title.textContent = "مقارنة بالمتوسط"; break;
-        case "bestWorst": title.textContent = "أعلى/أقل يوم"; break;
-        case "dev": title.textContent = "انحراف عن اليوم"; break;
-        case "vsTop": title.textContent = "مع أعلى مدرسة"; break;
-        case "vsLow": title.textContent = "مع أقل مدرسة"; break;
-        case "firstLast": title.textContent = "أول/آخر يوم"; break;
-        case "position": title.textContent = "موقع المدرسة"; break;
-        case "schoolVsOverall": title.textContent = "المدرسة مقابل الجميع"; break;
-      }
-      panel.appendChild(title);
-
-      const cv = document.createElement("canvas");
-      cv.id = "print_" + s.code + "_" + id;
-      panel.appendChild(cv);
-
-      grid.appendChild(panel);
-      localCanvases[id] = cv;
-    });
-
-    container.appendChild(page);
-
-    const labels = days.slice(0, s.values.length);
-    const topData = schools.find(x => x.code === topSchool.code);
-    const lowData = schools.find(x => x.code === lowSchool.code);
-
-    let c;
-
-    c = new Chart(localCanvases.trend.getContext("2d"), {
-      type: "line",
-      data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], backgroundColor: pastel[0] + "33", tension: 0.4, fill: true }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.vsAvg.getContext("2d"), {
-      type: "bar",
-      data: { labels, datasets: [{ data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 }, { data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[6], borderRadius: 4 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    const maxVal = Math.max(...s.values);
-    const minVal = Math.min(...s.values);
-    const maxIdx = s.values.indexOf(maxVal);
-    const minIdx = s.values.indexOf(minVal);
-
-    c = new Chart(localCanvases.bestWorst.getContext("2d"), {
-      type: "bar",
-      data: { labels: [labels[maxIdx], labels[minIdx]], datasets: [{ data: [maxVal * 100, minVal * 100], backgroundColor: [pastel[4], pastel[1]], borderRadius: 4 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.dev.getContext("2d"), {
-      type: "bar",
-      data: { labels, datasets: [{ data: s.values.map((v, i) => (v - (avgByDay[i] || 0)) * 100), backgroundColor: s.values.map((v, i) => v >= (avgByDay[i] || 0) ? pastel[4] : pastel[1]), borderRadius: 2 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.vsTop.getContext("2d"), {
-      type: "line",
-      data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 }, { data: topData.values.map(v => v * 100), borderColor: pastel[4], tension: 0.4, borderDash: [5,5] }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.vsLow.getContext("2d"), {
-      type: "line",
-      data: { labels, datasets: [{ data: s.values.map(v => v * 100), borderColor: pastel[0], tension: 0.4 }, { data: lowData.values.map(v => v * 100), borderColor: pastel[1], tension: 0.4, borderDash: [5,5] }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.firstLast.getContext("2d"), {
-      type: "bar",
-      data: { labels: [labels[0], labels[s.values.length - 1]], datasets: [{ data: [s.values[0] * 100, s.values[s.values.length - 1] * 100], backgroundColor: [pastel[3], pastel[5]], borderRadius: 4 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.position.getContext("2d"), {
-      type: "bar",
-      data: { labels: schoolAverages.map(x => x.name), datasets: [{ data: schoolAverages.map(x => x.avg * 100), backgroundColor: schoolAverages.map(x => x.code === s.code ? pastel[0] : pastel[6]), borderRadius: 2 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ display:false } } }
-    });
-
-    c = new Chart(localCanvases.schoolVsOverall.getContext("2d"), {
-      type: "bar",
-      data: { labels, datasets: [{ data: s.values.map(v => v * 100), backgroundColor: pastel[0], borderRadius: 4 }, { data: avgByDay.slice(0, s.values.length).map(v => v * 100), backgroundColor: pastel[2], borderRadius: 4 }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
-    });
-  });
-
-  allPrintBuilt = true;
-}
-
-/* ===========================
-   9) الطباعة والتصدير
-=========================== */
-function printGeneral() {
-  document.body.classList.add("print-general");
-  document.body.classList.remove("print-detail");
-  window.print();
-}
-
-function printAllSchoolsDetail() {
-  if (!schools.length) {
-    alert("لا توجد بيانات للطباعة.");
-    return;
-  }
-  if (!allPrintBuilt) buildAllSchoolsPrint();
-  document.body.classList.remove("print-general");
-  document.body.classList.add("print-detail");
-  window.print();
-}
-
-function exportCurrentViewToPDF() {
-  if (schools.length === 0) {
-    alert("لا توجد بيانات للتصدير.");
-    return;
-  }
-
-  const isGeneral = !document.getElementById("generalSection").classList.contains("hidden");
-  const elementToPrint = isGeneral ? document.getElementById("generalSection") : document.getElementById("detailSection");
-  const filename = isGeneral ? 'التقرير_العام_للغياب.pdf' : 'تقرير_مدرسة_' + document.getElementById("detailSchoolName").innerText + '.pdf';
-
-  const options = {
-    margin: 0.3,
-    filename,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-  };
-
-  html2pdf().set(options).from(elementToPrint).save();
-}
-
-/* ===========================
-   10) تصدير data.json (admin)
-=========================== */
 function exportDataAsJson() {
-  if (!IS_ADMIN) return;
-  if (!schools.length || !days.length) {
-    alert("ارفع Excel أولاً ثم صدّر data.json");
-    return;
-  }
-
-  const payload = { days, schools: schools.map(s => ({ code: s.code, name: s.name, values: s.values })) };
+  if (!IS_ADMIN || !schools.length) return;
+  
+  // إعادة بناء البيانات للتصدير بحيث لا تأخذ الخصائص الإضافية التي أضفناها للعرض
+  const exportSchools = schools.map(s => ({ code: s.code, name: s.name, values: s.values }));
+  const payload = { days, schools: exportSchools };
+  
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
-  a.href = url;
-  a.download = "data.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
+  a.href = url; a.download = "data.json";
+  document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
 }
 
-/* ===========================
-   11) تشغيل تلقائي
-=========================== */
 window.addEventListener("DOMContentLoaded", () => {
   loadDataFromJsonUrl();
 });
