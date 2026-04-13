@@ -15,7 +15,7 @@
 
   <style>
     :root {
-      --primary: #2C5F2D; /* تعديل طفيف للون بناء على تفضيلاتك المهنية السابقة */
+      --primary: #2C5F2D; 
       --secondary: #97BC62;
       --accent: #D7BCE8;
       --bg-color: #F8F9FA;
@@ -80,7 +80,6 @@
     }
 
     .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
-
     .btn.primary-action { background: var(--primary); color: #fff; border: none; }
     .btn.pdf-btn { background: #e74c3c; color: white; border: none; }
 
@@ -91,27 +90,95 @@
       flex-wrap: wrap;
     }
 
-    .header-select-wrap {
+    /* =========================================
+       تنسيقات القائمة المنسدلة ذات مربعات الاختيار
+       ========================================= */
+    .custom-select-container {
+      position: relative;
+      width: 280px;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .custom-select-header {
+      background: var(--card-bg);
+      border: 1px solid #D1D8DD;
+      padding: 12px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dark);
+      user-select: none;
+    }
+    .custom-select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #D1D8DD;
+      border-radius: 8px;
+      margin-top: 5px;
+      max-height: 350px;
+      overflow-y: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none; /* مخفي افتراضياً */
+      flex-direction: column;
+    }
+    .custom-select-options.open {
+      display: flex;
+    }
+    .custom-option {
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .custom-option:hover {
+      background: #f1f8e9;
+    }
+    .custom-option input[type="checkbox"] {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+    }
+    .search-box {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 2;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 13px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+    .select-all-row {
+      font-weight: 800;
+      background: #f0f7fa;
+      position: sticky;
+      top: 55px; /* بعد مربع البحث مباشرة */
+      z-index: 1;
     }
 
-    select[multiple] {
-      background: var(--bg-color);
-      color: var(--text-dark);
-      border-radius: 8px;
-      border: 1px solid #D1D8DD;
-      padding: 5px;
-      font-size: 13px;
-      font-family: 'Tajawal', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      outline: none;
-      width: 250px;
-      height: 70px;
-    }
-    
     .hidden { display: none !important; }
     .layout { display: block; min-height: calc(100vh - 80px); }
     main { padding: 20px 22px; overflow-y: auto; }
@@ -157,34 +224,12 @@
     canvas { width: 100% !important; height: 260px !important; }
 
     /* تنسيق جدول البيانات */
-    .table-responsive {
-      overflow-x: auto;
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-size: 13px;
-    }
-    .data-table th {
-      background-color: var(--primary);
-      color: #fff;
-      padding: 12px 10px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .data-table td {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-      color: var(--text-dark);
-    }
-    .data-table tbody tr:hover {
-      background-color: #f1f8e9;
-    }
-    .data-table tbody tr td:last-child {
-      font-weight: 800;
-      color: #e74c3c;
-    }
+    .table-responsive { overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 13px; }
+    .data-table th { background-color: var(--primary); color: #fff; padding: 12px 10px; font-weight: 700; white-space: nowrap; }
+    .data-table td { padding: 10px; border-bottom: 1px solid #eee; color: var(--text-dark); }
+    .data-table tbody tr:hover { background-color: #f1f8e9; }
+    .data-table tbody tr td:last-child { font-weight: 800; color: #e74c3c; }
 
     .section-title {
       font-size: 19px;
@@ -195,43 +240,27 @@
       align-items: center;
     }
     .section-title::before {
-      content: "";
-      display: inline-block;
-      width: 6px;
-      height: 18px;
-      background: var(--primary);
-      margin-left: 10px;
-      border-radius: 4px;
+      content: ""; display: inline-block; width: 6px; height: 18px;
+      background: var(--primary); margin-left: 10px; border-radius: 4px;
     }
 
     .note-box {
-      background: #fff;
-      border: 1px solid #eee;
-      border-right: 5px solid var(--primary);
-      padding: 12px 14px;
-      border-radius: 10px;
-      color: var(--text-muted);
-      font-size: 13px;
+      background: #fff; border: 1px solid #eee; border-right: 5px solid var(--primary);
+      padding: 12px 14px; border-radius: 10px; color: var(--text-muted); font-size: 13px;
     }
 
     .status-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      background: #f3f6f9;
-      border: 1px solid #e7edf3;
-      color: var(--text-muted);
+      display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 800; background: #f3f6f9; border: 1px solid #e7edf3;
+      color: var(--text-muted); justify-content: center;
     }
 
     @media (max-width: 900px) {
       header { flex-direction: column; align-items: stretch; }
       .header-controls { grid-template-columns: 1fr; }
+      .custom-select-container { width: 100%; }
       .grid-3 { grid-template-columns: 1fr; }
       .kpi-row { grid-template-columns: repeat(2, 1fr); }
-      select[multiple] { width: 100%; }
     }
   </style>
 </head>
@@ -245,13 +274,27 @@
 
   <div class="right-block">
     <div class="header-controls">
-      <div class="header-select-wrap">
-        <select id="schoolSelect" multiple onchange="updateView()" disabled title="اضغط Ctrl أو Cmd لتحديد أكثر من مدرسة للمقارنة"></select>
-        <button class="btn" style="height:70px;" onclick="selectAllSchools()">تحديد الكل</button>
+      
+      <div class="custom-select-container" id="customSelectContainer">
+        <div class="custom-select-header" onclick="toggleDropdown()">
+          <span id="dropdownTitle">جاري تحميل المدارس...</span>
+          <span style="font-size: 10px;">▼</span>
+        </div>
+        <div class="custom-select-options" id="dropdownOptions">
+          <div class="search-box">
+            <input type="text" id="schoolSearch" placeholder="🔍 ابحث باسم المدرسة..." onkeyup="filterSchools()">
+          </div>
+          <label class="custom-option select-all-row">
+            <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" checked>
+            تحديد الكل / إلغاء التحديد
+          </label>
+          <div id="checkboxList">
+            </div>
+        </div>
       </div>
 
       <div style="display:flex; flex-direction: column; gap: 5px;">
-          <div class="status-pill" id="dataStatus">بانتظار تحميل البيانات...</div>
+          <div class="status-pill" id="dataStatus">بانتظار التحميل...</div>
           <button class="btn primary-action" onclick="refreshData()">تحديث البيانات</button>
           <button class="btn pdf-btn" onclick="exportCurrentViewToPDF()">تصدير PDF</button>
       </div>
@@ -295,7 +338,7 @@
         <div class="kpi">
           <div class="kpi-title">عدد المدارس المعروضة</div>
           <div class="kpi-value" id="kpiSchoolCount">-</div>
-          <div class="kpi-sub">من إجمالي المدارس</div>
+          <div class="kpi-sub">من إجمالي المدارس بالنطاق</div>
         </div>
       </div>
 
@@ -404,50 +447,103 @@ function processPayload(rawDays, rawSchools) {
 
     totalSchoolsCount = schools.length;
 
-    initSelector();
-    selectAllSchools(); // افتراضياً تحديد وعرض الكل
+    initCustomSelector(); // إنشاء القائمة المنسدلة بالمربعات
+    handleSelectionChange(); // استدعاء دالة التحديث لبدء العرض الافتراضي
+
     document.getElementById("noDataSection").classList.add("hidden");
     document.getElementById("dashboardSection").classList.remove("hidden");
-    document.getElementById("schoolSelect").disabled = false;
-    
     setStatus("تم تحميل البيانات ✅");
 }
 
-function initSelector() {
-  const sel = document.getElementById("schoolSelect");
-  sel.innerHTML = "";
-  // ترتيب القائمة المنسدلة هجائياً لسهولة البحث
-  let sortedForDropdown = [...schools].sort((a, b) => a.name.localeCompare(b.name));
+/* ===========================
+   3) التحكم في القائمة المنسدلة المخصصة
+=========================== */
+function initCustomSelector() {
+  const list = document.getElementById("checkboxList");
+  list.innerHTML = "";
   
-  sortedForDropdown.forEach((s) => {
-    const opt = document.createElement("option");
-    opt.value = s.id;
-    opt.textContent = s.name;
-    sel.appendChild(opt);
+  // الترتيب الأبجدي لتسهيل البحث
+  let sortedForDropdown = [...schools].sort((a, b) => a.name.localeCompare(b.name));
+
+  sortedForDropdown.forEach(s => {
+    const lbl = document.createElement("label");
+    lbl.className = "custom-option school-item";
+    lbl.innerHTML = `<input type="checkbox" class="school-cb" value="${s.id}" onchange="handleSelectionChange()" checked> <span class="school-name-text">${s.name}</span>`;
+    list.appendChild(lbl);
   });
 }
 
-function selectAllSchools() {
-  const sel = document.getElementById("schoolSelect");
-  for(let i=0; i<sel.options.length; i++) {
-    sel.options[i].selected = true;
-  }
-  updateView();
+function toggleDropdown() {
+  document.getElementById("dropdownOptions").classList.toggle("open");
 }
 
-/* ===========================
-   3) تحديث العرض بناءً على التحديد المتعدد
-=========================== */
-function updateView() {
-  const sel = document.getElementById("schoolSelect");
-  const selectedIds = Array.from(sel.selectedOptions).map(opt => parseInt(opt.value));
+// إغلاق القائمة عند النقر خارجها
+document.addEventListener("click", function(e) {
+  const container = document.getElementById("customSelectContainer");
+  if (container && !container.contains(e.target)) {
+    document.getElementById("dropdownOptions").classList.remove("open");
+  }
+});
+
+// وظيفة البحث داخل القائمة المنسدلة
+function filterSchools() {
+  const term = document.getElementById("schoolSearch").value.toLowerCase();
+  const items = document.querySelectorAll(".school-item");
+  items.forEach(item => {
+    const text = item.querySelector(".school-name-text").textContent.toLowerCase();
+    item.style.display = text.includes(term) ? "flex" : "none";
+  });
+}
+
+// زر تحديد/إلغاء تحديد الكل
+function toggleSelectAll(masterCb) {
+  const cbs = document.querySelectorAll(".school-cb");
+  cbs.forEach(cb => {
+    // تحديد العناصر الظاهرة فقط (في حال استخدم المستخدم البحث) أو كلها
+    if(cb.closest('.school-item').style.display !== "none") {
+      cb.checked = masterCb.checked;
+    }
+  });
+  handleSelectionChange();
+}
+
+// هذه الدالة تعمل عند تغيير حالة أي مربع اختيار
+function handleSelectionChange() {
+  const cbs = Array.from(document.querySelectorAll(".school-cb"));
+  const checkedCbs = cbs.filter(cb => cb.checked);
+  const checkedCount = checkedCbs.length;
   
-  if (selectedIds.length === 0) return; // لا تفعل شيء إذا لم يتم تحديد أي مدرسة
+  // تحديث حالة زر "تحديد الكل"
+  const masterCb = document.getElementById("selectAllCheckbox");
+  masterCb.checked = (checkedCount === cbs.length);
+  
+  // تحديث العنوان
+  const title = document.getElementById("dropdownTitle");
+  if (checkedCount === 0) {
+    title.textContent = "لم يتم تحديد أي مدرسة";
+  } else if (checkedCount === totalSchoolsCount) {
+    title.textContent = `اختر المدارس (الكل ${totalSchoolsCount})`;
+  } else {
+    title.textContent = `تم تحديد (${checkedCount}) مدرسة`;
+  }
 
-  // سحب المدارس المحددة فقط
+  // جمع IDs المدارس المحددة لتحديث اللوحة
+  const selectedIds = checkedCbs.map(cb => parseInt(cb.value));
+  updateDashboard(selectedIds);
+}
+
+
+/* ===========================
+   4) تحديث واجهة العرض بناءً على التحديد
+=========================== */
+function updateDashboard(selectedIds) {
+  if (selectedIds.length === 0) {
+    clearDashboard();
+    return;
+  }
+
+  // فلترة وترتيب المدارس تصاعدياً من الأقل للأعلى غياباً
   let activeSchools = schools.filter(s => selectedIds.includes(s.id));
-
-  // ✅ ترتيب المدارس المحددة من الأقل غياباً إلى الأعلى غياباً
   activeSchools.sort((a, b) => a.avg - b.avg);
 
   updateKPIs(activeSchools);
@@ -455,10 +551,26 @@ function updateView() {
   updateTable(activeSchools);
 }
 
+function clearDashboard() {
+  document.getElementById("kpiOverallAvg").textContent = "-";
+  document.getElementById("kpiTopSchool").textContent = "-";
+  document.getElementById("kpiTopSchoolValue").textContent = "";
+  document.getElementById("kpiLowSchool").textContent = "-";
+  document.getElementById("kpiLowSchoolValue").textContent = "";
+  document.getElementById("kpiSchoolCount").textContent = "0 / " + totalSchoolsCount;
+
+  if(cAvgSort) cAvgSort.destroy();
+  if(cTrendCompare) cTrendCompare.destroy();
+  if(cDailyGroup) cDailyGroup.destroy();
+
+  document.getElementById("tableHead").innerHTML = "";
+  document.getElementById("tableBody").innerHTML = "<tr><td colspan='100%' style='padding:30px; font-weight:bold;'>الرجاء تحديد مدرسة واحدة على الأقل من القائمة المنسدلة لعرض البيانات.</td></tr>";
+}
+
 function updateKPIs(activeSchools) {
   let groupAvg = activeSchools.reduce((sum, s) => sum + s.avg, 0) / activeSchools.length;
-  let topS = activeSchools[activeSchools.length - 1]; // الأعلى غياباً (لأنها مرتبة تصاعدياً)
-  let lowS = activeSchools[0]; // الأقل غياباً
+  let topS = activeSchools[activeSchools.length - 1]; // الأعلى (لأن الترتيب تصاعدي)
+  let lowS = activeSchools[0]; // الأقل
 
   document.getElementById("kpiOverallAvg").textContent = (groupAvg * 100).toFixed(2) + "٪";
   document.getElementById("kpiTopSchool").textContent = topS.name;
@@ -469,10 +581,9 @@ function updateKPIs(activeSchools) {
 }
 
 /* ===========================
-   4) تحديث الرسوم البيانية الأساسية
+   5) تحديث الرسوم البيانية 
 =========================== */
 function updateCharts(activeSchools) {
-  // تدمير الرسوم السابقة إن وجدت لتحديثها
   if(cAvgSort) cAvgSort.destroy();
   if(cTrendCompare) cTrendCompare.destroy();
   if(cDailyGroup) cDailyGroup.destroy();
@@ -480,7 +591,6 @@ function updateCharts(activeSchools) {
   const names = activeSchools.map(s => s.name);
   const avgs = activeSchools.map(s => s.avg * 100);
 
-  // 1. رسم متوسط الغياب (أعمدة)
   cAvgSort = new Chart(document.getElementById("chartAvgSort"), {
     type: "bar",
     data: { 
@@ -490,8 +600,6 @@ function updateCharts(activeSchools) {
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 
-  // 2. تتبع مسار الغياب اليومي (خطي) للمدارس
-  // إذا كان عدد المدارس كبير جداً، قد يصبح الرسم الخطي مزدحماً لكنه مطلوب للمقارنة
   let trendDatasets = activeSchools.map((s, i) => ({
       label: s.name,
       data: s.values.map(v => v * 100),
@@ -499,7 +607,7 @@ function updateCharts(activeSchools) {
       borderWidth: 2,
       fill: false,
       tension: 0.3,
-      pointRadius: activeSchools.length > 10 ? 0 : 3 // إخفاء النقاط إذا زاد العدد لمنع التداخل
+      pointRadius: activeSchools.length > 10 ? 0 : 3 
   }));
 
   cTrendCompare = new Chart(document.getElementById("chartTrendCompare"), {
@@ -511,7 +619,6 @@ function updateCharts(activeSchools) {
     }
   });
 
-  // 3. متوسط المجموعة المحددة لكل يوم
   let groupDailyAvg = days.map((_, dIdx) => {
     let dayVals = activeSchools.map(s => s.values[dIdx]).filter(v => v !== undefined);
     return dayVals.length ? (dayVals.reduce((a,b)=>a+b,0) / dayVals.length) * 100 : 0;
@@ -528,16 +635,14 @@ function updateCharts(activeSchools) {
 }
 
 /* ===========================
-   5) بناء الجدول بناءً على التحديد
+   6) تحديث الجدول
 =========================== */
 function updateTable(activeSchools) {
-  // بناء رأس الجدول
   let thHtml = `<th>م</th><th>الرقم الوزاري</th><th>اسم المدرسة</th>`;
   days.forEach(d => thHtml += `<th>${d}</th>`);
   thHtml += `<th>متوسط المدرسة</th>`;
   document.getElementById("tableHead").innerHTML = thHtml;
 
-  // بناء محتوى الجدول (مرتب بالفعل تصاعدياً)
   let tbHtml = "";
   activeSchools.forEach((s, idx) => {
     tbHtml += `<tr>
@@ -625,8 +730,6 @@ if (IS_ADMIN) {
 
 function exportDataAsJson() {
   if (!IS_ADMIN || !schools.length) return;
-  
-  // إعادة بناء البيانات للتصدير بحيث لا تأخذ الخصائص الإضافية التي أضفناها للعرض
   const exportSchools = schools.map(s => ({ code: s.code, name: s.name, values: s.values }));
   const payload = { days, schools: exportSchools };
   
